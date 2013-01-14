@@ -1,11 +1,14 @@
 package game;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class GameControl {
-    private final Board board;
-    private Player[] players;
-    private final int piecesPerPlayer = 4;
-    private final Player[] endPositions;
     private int turn;
+
+    private Player[] players;
+    private final Player[] endPositions;
+    private final Board board;
 
     public GameControl() {
         this.board = null;
@@ -18,11 +21,10 @@ public class GameControl {
         this.endPositions = new Player[players.length];
         this.players = players;
 
-        
-        Piece[] pieces = new Piece;
-        
+        Set<Piece> pieces = new HashSet<Piece>();
+
         for (Player player : players) {
-            piecesplayer.getPieces();
+            pieces.addAll(player.getPieces());
         }
         this.board = new Board(pieces);
     }

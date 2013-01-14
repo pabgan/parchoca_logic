@@ -59,6 +59,11 @@ public class Position {
             throw new IllegalStateException("Illegal movement. Can not move to a position occupied by a wall.");
         }
 
+        // If position is already held by that piece
+        if ((occupants[0] == piece) || (occupants[1] == piece)) {
+            throw new IllegalArgumentException("Illegal movement. Can not move to the same position.");
+        }
+
         // If position is not empty nor a wall there must be a piece in the first spot
         // If it is of the same color as the one willing to move then we insert it in the second spot
         if (occupants[0].getColor() == piece.getColor()) {
