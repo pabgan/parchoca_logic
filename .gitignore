@@ -1,1 +1,5 @@
-bin*
+bin/*
+.checkstyle
+.classpath
+.project
+.settings/
