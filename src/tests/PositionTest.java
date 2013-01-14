@@ -383,6 +383,18 @@ public class PositionTest {
     /**
      * Test method for {@link game.Position#move(game.Piece)}.
      */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMoveToSamePlace() {
+        Position po = new Position(0);
+        Piece pi1 = new Piece(new Player(), Color.blue);
+
+        po.move(pi1);
+        po.move(pi1);
+    }
+
+    /**
+     * Test method for {@link game.Position#move(game.Piece)}.
+     */
     @Test(expected = IllegalStateException.class)
     public void testRemoveEmpty() {
         Position po = new Position(0);
