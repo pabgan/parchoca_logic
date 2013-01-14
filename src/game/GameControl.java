@@ -1,17 +1,34 @@
 package game;
 
 public class GameControl {
-    public static final int piecesPerPlayer = 4;
-    public final int maximumNumberOfPlayers = 6;
-
     private final Board board;
-    private final Player[] players;
+    private Player[] players;
+    private final int piecesPerPlayer = 4;
     private final Player[] endPositions;
     private int turn;
 
     public GameControl() {
-        this.players = new Player[maximumNumberOfPlayers];
-        this.endPositions = new Player[maximumNumberOfPlayers];
+        this.board = null;
+        this.players = null;
+        this.endPositions = null;
+    }
+
+    public GameControl(Player[] players) {
+        this.players = players;
+        this.endPositions = new Player[players.length];
+        this.players = players;
+
+        
+        Piece[] pieces = new Piece;
+        
+        for (Player player : players) {
+            piecesplayer.getPieces();
+        }
+        this.board = new Board(pieces);
+    }
+
+    public void addPlayer(Player player) {
+
     }
 
     public void start() {

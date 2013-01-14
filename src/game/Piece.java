@@ -7,8 +7,11 @@ package game;
  * 
  */
 public class Piece {
-    private final Player player;
-    private final Color color;
+    private Player player = null;
+    private Color color = null;
+
+    public Piece() {
+    }
 
     public Piece(Player player, Color color) {
         this.player = player;
@@ -19,7 +22,15 @@ public class Piece {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public Color getColor() {
         return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

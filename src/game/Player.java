@@ -1,15 +1,20 @@
 package game;
 
 public class Player {
-    private final String name;
-    private final Color color;
-    private final Piece[] pieces = new Piece[GameControl.piecesPerPlayer];
+    private String name;
+    private Color color;
+    private Piece[] pieces = null;
     private int penalty;
-    private final IPlayerStrategy strategy;
+    private IPlayerStrategy strategy = null;
 
-    public Player(String name, Color color, IPlayerStrategy strategy) {
+    public Player() {
+
+    }
+
+    public Player(String name, Color color, int numPieces, IPlayerStrategy strategy) {
         this.name = name;
         this.color = color;
+        this.pieces = new Piece[numPieces];
 
         for (int i = 0; i < pieces.length; i++) {
             pieces[i] = new Piece(this, this.color);
@@ -44,5 +49,29 @@ public class Player {
         }
 
         return null;
+    }
+
+    public int getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(int penalty) {
+        this.penalty = penalty;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public Piece[] getPieces() {
+        return pieces;
+    }
+
+    public IPlayerStrategy getStrategy() {
+        return strategy;
     }
 }

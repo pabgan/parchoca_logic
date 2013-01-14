@@ -23,7 +23,7 @@ public class Position {
     }
 
     public boolean isPositionEmpty() {
-        return whoIsIn() == null;
+        return (occupants[0] == null);
     }
 
     public boolean isPositionWall() {
@@ -71,5 +71,28 @@ public class Position {
 
             return killed;
         }
+    }
+
+    /**
+     * @return The piece that was removed from this position
+     */
+    public Piece remove() {
+        Piece ret = null;
+
+        if (isPositionEmpty()) {
+            throw new IllegalStateException("Can not remove any piece from an empty position.");
+        }
+
+        if (isPositionWall()) {
+            ret = occupants[1];
+
+            occupants[1] = null;
+        } else {
+            ret = occupants[0];
+
+            occupants[0] = null;
+        }
+
+        return ret;
     }
 }
