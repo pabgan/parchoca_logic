@@ -1,13 +1,14 @@
 
 package game;
 
+import game.Piece.Color;
+
 public class Parchoca {
 
     /**
      * @param args
      */
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
+    public static void main(final String[] args) {
         String player0name = "Pablo0";
         Color color0 = Color.yellow;
 
@@ -21,18 +22,21 @@ public class Parchoca {
         Color color3 = Color.red;
 
         Player[] players = new Player[4];
-        players[0] = new Player(player0name, color0);
-        players[1] = new Player(player1name, color1);
-        players[2] = new Player(player2name, color2);
-        players[3] = new Player(player3name, color3);
+        players[0] = new Player(player0name, color0, 4, new StupidPlayerStrategy());
+        players[1] = new Player(player1name, color1, 4);
+        players[2] = new Player(player2name, color2, 4);
+        players[3] = new Player(player3name, color3, 4);
 
-        GameControl game = new GameControl(players);
+        GameControl gameControl = new GameControl();
+        gameControl.addPlayer(players[0]);
+        gameControl.addPlayer(players[1]);
+        // gameControl.addPlayer(players[2]);
+        // gameControl.addPlayer(players[3]);
+        gameControl.printState();
 
-        game.start();
+        gameControl.start();
 
-        while (!game.isOver()) {
-            Player nextPlayer = game.whoIsNextPlayer();
-        }
+        // Player winner = gameControl.start();
 
     }
 }

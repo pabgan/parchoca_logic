@@ -1,36 +1,48 @@
+
 package game;
 
 /**
  * Represents a player's piece on the game. It is just a Bean.
  * 
  * @author pganuza
- * 
  */
 public class Piece {
     private Player player = null;
-    private Color color = null;
+    private Square square = null;
 
     public Piece() {
     }
 
-    public Piece(Player player, Color color) {
+    public Piece(final Player player) {
         this.player = player;
-        this.color = color;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public void setPlayer(Player player) {
+    public void setPlayer(final Player player) {
         this.player = player;
     }
 
     public Color getColor() {
-        return color;
+        return player.getColor();
     }
 
-    public void setColor(Color color) {
-        this.color = color;
+    public Square getSquare() {
+        return square;
+    }
+
+    public void setSquare(final Square square) {
+        this.square = square;
+    }
+
+    @Override
+    public String toString() {
+        return getColor().toString().substring(0, 1);
+    }
+
+    public enum Color {
+        red, green, yellow, blue
     }
 }

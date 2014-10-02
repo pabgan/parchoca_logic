@@ -1,5 +1,13 @@
+
 package game;
 
+import game.Piece.Color;
+
+/**
+ * Represents a player in the game. It knows its pieces and decides moves.
+ * 
+ * @author pganuza
+ */
 public class Player {
     private String name;
     private Color color;
@@ -11,51 +19,32 @@ public class Player {
 
     }
 
-    public Player(String name, Color color, int numPieces, IPlayerStrategy strategy) {
+    public Player(final String name, final Color color, final int numPieces) {
         this.name = name;
         this.color = color;
         this.pieces = new Piece[numPieces];
 
         for (int i = 0; i < pieces.length; i++) {
-            pieces[i] = new Piece(this, this.color);
+            pieces[i] = new Piece(this);
+        }
+    }
+
+    public Player(final String name, final Color color, final int numPieces, final IPlayerStrategy strategy) {
+        this.name = name;
+        this.pieces = new Piece[numPieces];
+
+        for (int i = 0; i < pieces.length; i++) {
+            pieces[i] = new Piece(this);
         }
 
         this.strategy = strategy;
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public boolean canMove() {
-        if (penalty > 0) {
-            penalty--;
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * 
-     */
-    public Piece selectMove(Board board, Player[] players, int jumps) {
-        // TODO Auto-generated method stub
-        if (penalty > 0) {
-            penalty--;
-        } else {
-            return strategy.selectMove(this, board, players, jumps);
-
-        }
-
-        return null;
     }
 
     public int getPenalty() {
         return penalty;
     }
 
-    public void setPenalty(int penalty) {
+    public void setPenalty(final int penalty) {
         this.penalty = penalty;
     }
 
@@ -73,5 +62,32 @@ public class Player {
 
     public IPlayerStrategy getStrategy() {
         return strategy;
+    }
+
+    /**
+     * @return
+     */
+    public boolean canMove() {
+        if (penalty > 0) {
+            penalty--;
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 
+     */
+    public Piece selectPieceToMove(final Board board, final int jumps) {
+        // TODO Auto-generated method stub
+        if (penalty > 0) {
+            penalty--;
+        } else {
+            return strategy.selectMove(this, board, jumps);
+
+        }
+
+        return null;
     }
 }
