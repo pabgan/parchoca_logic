@@ -36,7 +36,7 @@ public class GameControl {
         while (!gameOver) {
             playerCurrent = playerIterator.nextPlayer();
 
-            if (playerCurrent.canMove()) {
+            if (playerCurrent.getPenalty() <= 0) {
                 do {
                     jumps = Dice.throwDice();
                     if (jumps == 6) {
@@ -52,14 +52,10 @@ public class GameControl {
 
                         do {
                             pieceToMove = playerCurrent.selectPieceToMove(board, jumps);
-                            extraJumps = executeMove(pieceToMove, jumps);
+                            extraJumps = board.move(pieceToMove, jumps);
 
-                            gameOver = true;
-                            for (Piece piece : playerCurrent.getPieces()) {
-                                if (!board.isAtParchoca(piece)) {
-                                    gameOver = false;
-                                    break;
-                                }
+                            if (extraJumps == 10) {
+                                gameOver = isGameOver();
                             }
                         } while (extraJumps < 0);
 
@@ -72,16 +68,12 @@ public class GameControl {
         return playerCurrent;
     }
 
-    private int executeMove(final Piece pieceToMove, final int jumps) {
-        if (board.move(pieceToMove, jumps)) {
-            return 20;
+    private boolean isGameOver() {
+        if (board.whoIsAtParchoca().size() == playerIterator.getPlayers().size() * 2) {
+            return true;
+        } else {
+            return false;
         }
-
-        if (board.isAtParchoca(pieceToMove)) {
-            return 10;
-        }
-
-        return pieceToMove.getSquare().getPenalty();
     }
 
     public void printState() {
@@ -102,6 +94,10 @@ public class GameControl {
             }
             players.add(player);
 
+        }
+
+        public ArrayList<Player> getPlayers() {
+            return players;
         }
 
         public Player nextPlayer() {

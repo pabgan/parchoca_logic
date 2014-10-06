@@ -2,7 +2,7 @@
  * 
  */
 
-package tests;
+package test;
 
 import game.Piece;
 import game.Piece.Color;
@@ -11,16 +11,14 @@ import game.Square;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
  * @author pganuza
  */
 public class SquareTest {
+    Square square;
     Player playerBlue = new Player("Blue", Color.blue, 4);
     Piece pieceBlue0 = playerBlue.getPieces()[0];
     Piece pieceBlue1 = playerBlue.getPieces()[1];
@@ -35,29 +33,9 @@ public class SquareTest {
     /**
      * @throws java.lang.Exception
      */
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @AfterClass
-    public static void tearDownAfterClass() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
     @Before
     public void setUp() throws Exception {
-    }
-
-    /**
-     * @throws java.lang.Exception
-     */
-    @After
-    public void tearDown() throws Exception {
+        square = new Square(0, 0, null);
     }
 
     /**
@@ -65,14 +43,13 @@ public class SquareTest {
      */
     @Test
     public void testGetNumberAndPenalty() {
-        Square square = new Square(0, 0);
         Assert.assertEquals(0, square.getNumber());
 
-        square = new Square(Integer.MIN_VALUE, Integer.MIN_VALUE);
+        square = new Square(Integer.MIN_VALUE, Integer.MIN_VALUE, null);
         Assert.assertEquals(Integer.MIN_VALUE, square.getNumber());
         Assert.assertEquals(Integer.MIN_VALUE, square.getPenalty());
 
-        square = new Square(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        square = new Square(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
         Assert.assertEquals(Integer.MAX_VALUE, square.getNumber());
         Assert.assertEquals(Integer.MAX_VALUE, square.getPenalty());
     }
@@ -82,7 +59,6 @@ public class SquareTest {
      */
     @Test
     public void testGetOccupants0() {
-        Square square = new Square(0, 0);
         Piece[] occupants = square.getOccupants();
 
         Assert.assertNull(occupants[0]);
@@ -94,7 +70,6 @@ public class SquareTest {
      */
     @Test
     public void testGetOccupants1() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Piece[] occupants = square.getOccupants();
 
@@ -107,7 +82,6 @@ public class SquareTest {
      */
     @Test
     public void testGetOccupants2() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Piece[] occupants = square.getOccupants();
@@ -121,7 +95,6 @@ public class SquareTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testAddNull() {
-        Square square = new Square(0, 0);
         square.add(null);
     }
 
@@ -130,7 +103,6 @@ public class SquareTest {
      */
     @Test
     public void testAddToEmptySquare() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.add(pieceBlue0));
     }
 
@@ -139,7 +111,6 @@ public class SquareTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddSamePieceTwice() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.add(pieceBlue0));
         square.add(pieceBlue0);
     }
@@ -149,7 +120,6 @@ public class SquareTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddPieceToWallSameColor() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.add(pieceBlue0));
         Assert.assertNull(square.add(pieceBlue1));
         square.add(pieceBlue2);
@@ -160,7 +130,6 @@ public class SquareTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddPieceToWallDifferentColor() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.add(pieceBlue0));
         Assert.assertNull(square.add(pieceBlue1));
         square.add(pieceRed0);
@@ -171,7 +140,6 @@ public class SquareTest {
      */
     @Test(expected = IllegalStateException.class)
     public void testAddSamePieceTwiceToWall() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.add(pieceBlue0));
         Assert.assertNull(square.add(pieceBlue1));
         square.add(pieceBlue0);
@@ -182,7 +150,6 @@ public class SquareTest {
      */
     @Test
     public void testRemoveEmpty() {
-        Square square = new Square(0, 0);
         Assert.assertNull(square.remove());
     }
 
@@ -191,7 +158,6 @@ public class SquareTest {
      */
     @Test
     public void testRemove1Occupant() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertEquals(pieceBlue0, square.remove());
         Assert.assertNull(square.remove());
@@ -202,7 +168,6 @@ public class SquareTest {
      */
     @Test
     public void testRemove2Occupants() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertEquals(pieceBlue0, square.remove());
@@ -215,7 +180,6 @@ public class SquareTest {
      */
     @Test
     public void testRemovePieceEmpty() {
-        Square square = new Square(0, 0);
         Assert.assertFalse(square.remove(pieceBlue0));
     }
 
@@ -224,7 +188,6 @@ public class SquareTest {
      */
     @Test
     public void testRemovePieceNotPresent() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertFalse(square.remove(pieceBlue1));
     }
@@ -234,7 +197,6 @@ public class SquareTest {
      */
     @Test
     public void testRemovePiece() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertTrue(square.remove(pieceBlue0));
     }
@@ -244,7 +206,6 @@ public class SquareTest {
      */
     @Test
     public void testRemovePieceTwice() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertTrue(square.remove(pieceBlue0));
         Assert.assertFalse(square.remove(pieceBlue0));
@@ -255,7 +216,6 @@ public class SquareTest {
      */
     @Test
     public void testRemovePieceFromWall() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertTrue(square.remove(pieceBlue0));
@@ -272,7 +232,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmpty0Pieces() {
-        Square square = new Square(0, 0);
         Assert.assertTrue(square.isEmpty());
     }
 
@@ -281,7 +240,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmpty1Piece() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertFalse(square.isEmpty());
     }
@@ -291,7 +249,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmptyWall() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertFalse(square.isEmpty());
@@ -302,7 +259,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmptyAfterRemove0Pieces() {
-        Square square = new Square(0, 0);
         square.remove();
         Assert.assertTrue(square.isEmpty());
     }
@@ -312,7 +268,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmptyAfterRemove1Piece() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.remove();
         Assert.assertTrue(square.isEmpty());
@@ -323,7 +278,6 @@ public class SquareTest {
      */
     @Test
     public void testIsEmptyAfterRemove2Pieces() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         square.remove();
@@ -337,7 +291,6 @@ public class SquareTest {
      */
     @Test
     public void testIsWall0Pieces() {
-        Square square = new Square(0, 0);
         Assert.assertFalse(square.isWall());
     }
 
@@ -346,7 +299,6 @@ public class SquareTest {
      */
     @Test
     public void testIsWall1Piece() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         Assert.assertFalse(square.isWall());
     }
@@ -356,7 +308,6 @@ public class SquareTest {
      */
     @Test
     public void testIsWall2PiecesSameColor() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertTrue(square.isWall());
@@ -367,7 +318,6 @@ public class SquareTest {
      */
     @Test
     public void testIsWall2PiecesDifferentColor() {
-        Square square = new Square(0, 0);
         square.add(pieceBlue0);
         square.add(pieceRed0);
         Assert.assertFalse(square.isWall());

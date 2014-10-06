@@ -29,7 +29,7 @@ public class Parchoca {
 
         GameControl gameControl = new GameControl();
         gameControl.addPlayer(players[0]);
-        gameControl.addPlayer(players[1]);
+        // gameControl.addPlayer(players[1]);
         // gameControl.addPlayer(players[2]);
         // gameControl.addPlayer(players[3]);
         gameControl.printState();

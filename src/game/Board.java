@@ -32,17 +32,82 @@ public class Board {
         this.piecesAtParchoca = new ArrayList<Piece>();
 
         for (int i = 0; i < board.length; i++) {
-            board[i] = new Square(i + 1, 0);
+            board[i] = new Square(i + 1, 0, null);
         }
     }
 
     public boolean addPiece(final Piece piece) {
+        if (piece == null) {
+            throw new IllegalArgumentException("Piece to add is null!");
+        }
+        if (piecesAtHome.contains(piece)) {
+            throw new IllegalArgumentException("Piece is already in!");
+        }
         return piecesAtHome.add(piece);
     }
 
     public boolean killPiece(final Piece piece) {
+        if (piecesAtHome.contains(piece) || piecesAtParchoca.contains(piece)) {
+            throw new IllegalStateException("Can't kill a piece when it is not on the road!");
+        }
         boolean removed = piece.getSquare().remove(piece);
         return removed && piecesAtHome.add(piece);
+    }
+
+    /**
+     * Is responsible of executing the movement in case it is valid.
+     * 
+     * @param piece
+     * @param jumps
+     * @return number of extra jumps if > 0 or penalty turns if < 0
+     */
+    public int move(final Piece piece, final int jumps) {
+        if (jumps < 1) {
+            throw new IllegalArgumentException("Can't jump less than 1 square.");
+        }
+
+        int finalSquare = countJumps(piece.getSquare().getNumber(), jumps, true);
+        int ret = 0;
+
+        // Now we execute the move
+        piece.getSquare().remove(piece);
+        Piece killedPiece = board[finalSquare].add(piece);
+
+        if (board[finalSquare].getPenalty() != 0) {
+            ret = board[finalSquare].getPenalty();
+        } else if (killedPiece != null) {
+            ret = 20;
+        } else if (isAtParchoca(piece)) {
+            ret = 10;
+        }
+
+        return ret;
+    }
+
+    private int countJumps(final int startSquare, final int jumps, final boolean forward) {
+        if (jumps == 0) {
+            Square linkedSquare = board[startSquare].getLinkedSquare();
+
+            if (linkedSquare != null && !linkedSquare.isWall()) {
+                return linkedSquare.getNumber();
+            } else {
+                return startSquare;
+            }
+        } else {
+            if (forward) {
+                if (board[startSquare + 1].isWall()) {
+                    return countJumps(startSquare, jumps, false);
+                } else {
+                    return countJumps(startSquare + 1, jumps - 1, true);
+                }
+            } else {
+                if (board[startSquare - 1].isWall()) {
+                    return countJumps(startSquare, jumps, true);
+                } else {
+                    return countJumps(startSquare - 1, jumps - 1, false);
+                }
+            }
+        }
     }
 
     public boolean isSquareEmpty(final int square) {
@@ -81,34 +146,6 @@ public class Board {
         return piecesAtParchoca.contains(piece);
     }
 
-    /**
-     * Is responsible of executing the movement in case it is valid.
-     * 
-     * @param piece
-     * @param jumps
-     * @return true if move was killer, false otherwise.
-     */
-    public boolean move(final Piece piece, final int jumps) {
-        return false;
-    }
-
-    // public int whereWouldItEnd(final Piece piece, final int jumps) {
-    // // First we find the piece
-    // if (piecesAtHome.contains(piece)) {
-    // Square wall = whereIsTheWall(0, jumps);
-    // } else if (piecesAtParchoca.contains(piece)) {
-    // throw new IllegalArgumentException("Can not move a piece that is already at Parchoca.");
-    // } else if (piecesOnTheRoad.containsKey(piece)) {
-    //
-    // } else {
-    // throw new IllegalArgumentException("Piece not found.");
-    // }
-    //
-    // }
-
-    // private int whereWouldItEnd(final Piece piece, final int jumps, final boolean forward) {
-    //
-    // }
     @Override
     public String toString() {
         // Line 0

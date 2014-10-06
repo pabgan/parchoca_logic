@@ -10,14 +10,17 @@ package game;
  * @author pganuza
  */
 public class Square {
+    // Square number from 1 to 63
     private final int number;
     private final Piece[] occupants;
     private final int penalty;
+    private final Square linkedSquare;
 
-    public Square(final int number, final int penalty) {
+    public Square(final int number, final int penalty, final Square linkedSquare) {
         this.number = number;
         occupants = new Piece[2];
         this.penalty = penalty;
+        this.linkedSquare = linkedSquare;
     }
 
     public int getNumber() {
@@ -26,6 +29,10 @@ public class Square {
 
     public int getPenalty() {
         return penalty;
+    }
+
+    public Square getLinkedSquare() {
+        return linkedSquare;
     }
 
     /**
