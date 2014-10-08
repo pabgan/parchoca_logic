@@ -21,21 +21,21 @@ import org.junit.Test;
  */
 public class BoardTest {
     private Board board;
-    Player playerBlue = new Player("Blue", Color.blue, 4);
-    Piece pieceBlue0 = playerBlue.getPieces()[0];
-    Piece pieceBlue1 = playerBlue.getPieces()[1];
-    Piece pieceBlue2 = playerBlue.getPieces()[2];
-    Piece pieceBlue3 = playerBlue.getPieces()[3];
-    Player playerGreen = new Player("Green", Color.green, 4);
-    Piece pieceGreen0 = playerGreen.getPieces()[0];
-    Piece pieceGreen1 = playerGreen.getPieces()[1];
-    Piece pieceGreen2 = playerGreen.getPieces()[2];
-    Piece pieceGreen3 = playerGreen.getPieces()[3];
-    Player playerRed = new Player("Red", Color.red, 4);
-    Piece pieceRed0 = playerRed.getPieces()[0];
-    Piece pieceRed1 = playerRed.getPieces()[1];
-    Piece pieceRed2 = playerRed.getPieces()[2];
-    Piece pieceRed3 = playerRed.getPieces()[3];
+    Player playerBlue;
+    Piece pieceBlue0;
+    Piece pieceBlue1;
+    Piece pieceBlue2;
+    Piece pieceBlue3;
+    Player playerGreen;
+    Piece pieceGreen0;
+    Piece pieceGreen1;
+    Piece pieceGreen2;
+    Piece pieceGreen3;
+    Player playerRed;
+    Piece pieceRed0;
+    Piece pieceRed1;
+    Piece pieceRed2;
+    Piece pieceRed3;
 
     /**
      * @throws java.lang.Exception
@@ -43,6 +43,21 @@ public class BoardTest {
     @Before
     public void setUp() throws Exception {
         board = new Board();
+        playerBlue = new Player("Blue", Color.blue, 4);
+        pieceBlue0 = playerBlue.getPieces()[0];
+        pieceBlue1 = playerBlue.getPieces()[1];
+        pieceBlue2 = playerBlue.getPieces()[2];
+        pieceBlue3 = playerBlue.getPieces()[3];
+        playerGreen = new Player("Green", Color.green, 4);
+        pieceGreen0 = playerGreen.getPieces()[0];
+        pieceGreen1 = playerGreen.getPieces()[1];
+        pieceGreen2 = playerGreen.getPieces()[2];
+        pieceGreen3 = playerGreen.getPieces()[3];
+        playerRed = new Player("Red", Color.red, 4);
+        pieceRed0 = playerRed.getPieces()[0];
+        pieceRed1 = playerRed.getPieces()[1];
+        pieceRed2 = playerRed.getPieces()[2];
+        pieceRed3 = playerRed.getPieces()[3];
     }
 
     /**
@@ -111,55 +126,326 @@ public class BoardTest {
     public void testKillPieceAtParchoca() {
         Assert.assertTrue(board.addPiece(pieceBlue0));
         board.move(pieceBlue0, 63);
+        Assert.assertEquals(63, pieceBlue0.getSquare().getNumber());
+        Assert.assertTrue(board.isAtParchoca(pieceBlue0));
         board.killPiece(pieceBlue0);
     }
 
     /**
      * Test method for {@link game.Board#move(game.Piece, int)}.
      */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMoveNullPiece() {
+        board.move(null, 0);
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMove0Jumps() {
+        board.move(pieceBlue0, 0);
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMoveNegativeJumps() {
+        board.move(pieceBlue0, -1);
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
     @Test
-    public void testMove() {
+    public void testMoveToParchoca() {
+        board.addPiece(pieceBlue0);
+        board.move(pieceBlue0, 63);
+        Assert.assertEquals(63, pieceBlue0.getSquare().getNumber());
+        Assert.assertTrue(board.isAtParchoca(pieceBlue0));
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testMovePieceAtParchoca() {
+        board.addPiece(pieceBlue0);
+        board.move(pieceBlue0, 63);
+        board.move(pieceBlue0, 1);
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMovePieceToLinkedSquare() {
         fail("Not yet implemented");
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMoveBounceBetweenWalls() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.addPiece(pieceBlue2);
+        board.addPiece(pieceGreen0);
+        board.addPiece(pieceGreen1);
+        board.move(pieceBlue0, 3);
+        board.move(pieceBlue1, 3);
+        board.move(pieceBlue2, 2);
+        board.move(pieceGreen0, 1);
+        board.move(pieceGreen1, 1);
+        board.move(pieceBlue2, 5);
+        Assert.assertEquals(2, pieceBlue2.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMoveBounceBetweenWallsAndKill() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.addPiece(pieceBlue2);
+        board.addPiece(pieceGreen0);
+        board.addPiece(pieceGreen1);
+        board.addPiece(pieceRed0);
+        board.move(pieceBlue0, 4);
+        board.move(pieceBlue1, 4);
+        board.move(pieceBlue2, 3);
+        board.move(pieceRed0, 2);
+        board.move(pieceGreen0, 1);
+        board.move(pieceGreen1, 1);
+        Assert.assertEquals(20, board.move(pieceBlue2, 3));
+        Assert.assertEquals(2, pieceBlue2.getSquare().getNumber());
+        Assert.assertTrue(board.isAtHome(pieceRed0));
+        Assert.assertEquals(0, pieceRed0.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMoveBounceBetweenHomeAndWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.addPiece(pieceBlue2);
+        board.addPiece(pieceGreen0);
+        board.addPiece(pieceGreen1);
+        board.move(pieceBlue0, 2);
+        board.move(pieceBlue1, 2);
+        board.move(pieceBlue2, 2);
+        Assert.assertEquals(1, pieceBlue2.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMoveBounceBetweenWallAndParchoca() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.addPiece(pieceBlue2);
+        board.move(pieceBlue0, 62);
+        board.move(pieceBlue1, 61);
+        board.move(pieceBlue2, 61);
+        board.move(pieceBlue0, 2);
+        Assert.assertEquals(62, pieceBlue0.getSquare().getNumber());
+        board.move(pieceBlue0, 4);
+        Assert.assertEquals(62, pieceBlue0.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsSquareEmptyNegativeNumber() {
+        board.isSquareEmpty(-1);
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsSquareEmptyOutOfBoard() {
+        board.isSquareEmpty(64);
     }
 
     /**
      * Test method for {@link game.Board#isSquareEmpty(int)}.
      */
     @Test
-    public void testIsSquareEmpty() {
-        fail("Not yet implemented");
+    public void testIsSquareEmptyNoPiecesOnBoard() {
+        Assert.assertTrue(board.isSquareEmpty(0));
+        Assert.assertTrue(board.isSquareEmpty(10));
+        Assert.assertTrue(board.isSquareEmpty(63));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsSquareEmpty0Pieces() {
+        board.addPiece(pieceBlue0);
+        Assert.assertFalse(board.isSquareEmpty(0));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsSquareEmpty1PieceMovesOut() {
+        board.addPiece(pieceBlue0);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertTrue(board.isSquareEmpty(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertTrue(board.isSquareEmpty(0));
+        Assert.assertFalse(board.isSquareEmpty(10));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsSquareEmptyDisolvingWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertTrue(board.isSquareEmpty(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareEmpty(10));
+        board.move(pieceBlue1, 10);
+        Assert.assertTrue(board.isSquareEmpty(0));
+        Assert.assertFalse(board.isSquareEmpty(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareEmpty(10));
+        board.move(pieceBlue1, 10);
+        Assert.assertTrue(board.isSquareEmpty(10));
+        Assert.assertFalse(board.isSquareEmpty(20));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsSquareEmptyAfterKill() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceGreen0);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertTrue(board.isSquareEmpty(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertFalse(board.isSquareEmpty(10));
+        board.move(pieceGreen0, 10);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertFalse(board.isSquareEmpty(10));
+        board.move(pieceGreen0, 10);
+        Assert.assertFalse(board.isSquareEmpty(0));
+        Assert.assertTrue(board.isSquareEmpty(10));
+        Assert.assertFalse(board.isSquareEmpty(20));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsSquareAWallNegativeNumber() {
+        board.isSquareAWall(-1);
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testIsSquareAWallOutOfBoard() {
+        board.isSquareAWall(64);
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsSquareAWallNoPiecesOnBoard() {
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertFalse(board.isSquareAWall(10));
+        Assert.assertFalse(board.isSquareAWall(63));
     }
 
     /**
      * Test method for {@link game.Board#isSquareAWall(int)}.
      */
     @Test
-    public void testIsSquareAWall() {
-        fail("Not yet implemented");
+    public void testIsSquareAWallEmptySquare() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertFalse(board.isSquareAWall(10));
     }
 
     /**
-     * Test method for {@link game.Board#whoIsAtHome()}.
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
      */
     @Test
-    public void testWhoIsAtHome() {
-        fail("Not yet implemented");
+    public void testIsSquareAWallDisolvingWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceBlue1, 10);
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertTrue(board.isSquareAWall(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceBlue1, 10);
+        Assert.assertFalse(board.isSquareAWall(10));
+        Assert.assertTrue(board.isSquareAWall(20));
     }
 
     /**
-     * Test method for {@link game.Board#whoIsAtParchoca()}.
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
      */
     @Test
-    public void testWhoIsAtParchoca() {
-        fail("Not yet implemented");
+    public void testIsSquareAWallAfterKill() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceGreen0);
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceBlue0, 10);
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceGreen0, 10);
+        Assert.assertFalse(board.isSquareAWall(0));
+        Assert.assertFalse(board.isSquareAWall(10));
+        board.move(pieceGreen0, 10);
+        Assert.assertFalse(board.isSquareAWall(10));
+        Assert.assertFalse(board.isSquareAWall(20));
     }
 
     /**
-     * Test method for {@link game.Board#whereIs(game.Piece)}.
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
      */
     @Test
-    public void testWhereIs() {
-        fail("Not yet implemented");
+    public void testIsHomeSquareAWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        Assert.assertFalse(board.isSquareAWall(0));
+    }
+
+    /**
+     * Test method for {@link game.Board#isSquareEmpty(int)}.
+     */
+    @Test
+    public void testIsParchocaSquareAWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.move(pieceBlue0, 63);
+        board.move(pieceBlue1, 63);
+        Assert.assertFalse(board.isSquareAWall(63));
     }
 
     /**
@@ -167,7 +453,16 @@ public class BoardTest {
      */
     @Test
     public void testIsAtHome() {
-        fail("Not yet implemented");
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceGreen0);
+        Assert.assertTrue(board.isAtHome(pieceBlue0));
+        Assert.assertTrue(board.isAtHome(pieceGreen0));
+        board.move(pieceBlue0, 1);
+        Assert.assertFalse(board.isAtHome(pieceBlue0));
+        Assert.assertTrue(board.isAtHome(pieceGreen0));
+        board.move(pieceGreen0, 1);
+        Assert.assertTrue(board.isAtHome(pieceBlue0));
+        Assert.assertFalse(board.isAtHome(pieceGreen0));
     }
 
     /**
@@ -175,7 +470,15 @@ public class BoardTest {
      */
     @Test
     public void testIsAtParchoca() {
-        fail("Not yet implemented");
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceGreen0);
+        Assert.assertFalse(board.isAtParchoca(pieceBlue0));
+        Assert.assertFalse(board.isAtParchoca(pieceGreen0));
+        board.move(pieceBlue0, 63);
+        Assert.assertTrue(board.isAtParchoca(pieceBlue0));
+        Assert.assertFalse(board.isAtParchoca(pieceGreen0));
+        board.move(pieceGreen0, 63);
+        Assert.assertTrue(board.isAtParchoca(pieceBlue0));
+        Assert.assertTrue(board.isAtParchoca(pieceGreen0));
     }
-
 }

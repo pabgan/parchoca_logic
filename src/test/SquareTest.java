@@ -104,6 +104,19 @@ public class SquareTest {
     @Test
     public void testAddToEmptySquare() {
         Assert.assertNull(square.add(pieceBlue0));
+        Assert.assertEquals(square, pieceBlue0.getSquare());
+    }
+
+    /**
+     * Test method for {@link game.Square#add(game.Piece)}.
+     */
+    @Test
+    public void testAddToMakeWall() {
+        Assert.assertNull(square.add(pieceBlue0));
+        Assert.assertEquals(square, pieceBlue0.getSquare());
+        Assert.assertNull(square.add(pieceBlue1));
+        Assert.assertEquals(square, pieceBlue1.getSquare());
+        Assert.assertTrue(square.isWall());
     }
 
     /**
@@ -160,6 +173,7 @@ public class SquareTest {
     public void testRemove1Occupant() {
         square.add(pieceBlue0);
         Assert.assertEquals(pieceBlue0, square.remove());
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertNull(square.remove());
     }
 
@@ -171,7 +185,9 @@ public class SquareTest {
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertEquals(pieceBlue0, square.remove());
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertEquals(pieceBlue1, square.remove());
+        Assert.assertNull(pieceBlue1.getSquare());
         Assert.assertNull(square.remove());
     }
 
@@ -199,6 +215,7 @@ public class SquareTest {
     public void testRemovePiece() {
         square.add(pieceBlue0);
         Assert.assertTrue(square.remove(pieceBlue0));
+        Assert.assertNull(pieceBlue0.getSquare());
     }
 
     /**
@@ -208,7 +225,9 @@ public class SquareTest {
     public void testRemovePieceTwice() {
         square.add(pieceBlue0);
         Assert.assertTrue(square.remove(pieceBlue0));
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertFalse(square.remove(pieceBlue0));
+        Assert.assertNull(pieceBlue0.getSquare());
     }
 
     /**
@@ -217,14 +236,20 @@ public class SquareTest {
     @Test
     public void testRemovePieceFromWall() {
         square.add(pieceBlue0);
+        Assert.assertEquals(square, pieceBlue0.getSquare());
         square.add(pieceBlue1);
+        Assert.assertEquals(square, pieceBlue1.getSquare());
         Assert.assertTrue(square.remove(pieceBlue0));
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertTrue(square.remove(pieceBlue1));
+        Assert.assertNull(pieceBlue1.getSquare());
 
         square.add(pieceBlue0);
         square.add(pieceBlue1);
         Assert.assertTrue(square.remove(pieceBlue1));
+        Assert.assertNull(pieceBlue1.getSquare());
         Assert.assertTrue(square.remove(pieceBlue0));
+        Assert.assertNull(pieceBlue0.getSquare());
     }
 
     /**
@@ -259,7 +284,7 @@ public class SquareTest {
      */
     @Test
     public void testIsEmptyAfterRemove0Pieces() {
-        square.remove();
+        Assert.assertNull(square.remove());
         Assert.assertTrue(square.isEmpty());
     }
 
@@ -269,7 +294,8 @@ public class SquareTest {
     @Test
     public void testIsEmptyAfterRemove1Piece() {
         square.add(pieceBlue0);
-        square.remove();
+        Assert.assertEquals(pieceBlue0, square.remove());
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertTrue(square.isEmpty());
     }
 
