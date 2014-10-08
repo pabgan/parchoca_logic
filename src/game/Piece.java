@@ -8,7 +8,7 @@ package game;
  */
 public class Piece {
     private Player player = null;
-    private Square square = null;
+    private ISquare square = null;
 
     public Piece() {
     }
@@ -29,11 +29,11 @@ public class Piece {
         return player.getColor();
     }
 
-    public Square getSquare() {
+    public ISquare getSquare() {
         return square;
     }
 
-    public void setSquare(final Square square) {
+    public void setSquare(final ISquare square) {
         this.square = square;
     }
 

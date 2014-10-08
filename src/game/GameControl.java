@@ -69,11 +69,12 @@ public class GameControl {
     }
 
     private boolean isGameOver() {
-        if (board.whoIsAtParchoca().size() == playerIterator.getPlayers().size() * 2) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
+        // if (board..whoIsAtParchoca().size() == playerIterator.getPlayers().size() * 2) {
+        // return true;
+        // } else {
+        // return false;
+        // }
     }
 
     public void printState() {

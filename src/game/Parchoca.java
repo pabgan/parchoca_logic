@@ -27,14 +27,30 @@ public class Parchoca {
         players[2] = new Player(player2name, color2, 4);
         players[3] = new Player(player3name, color3, 4);
 
-        GameControl gameControl = new GameControl();
-        gameControl.addPlayer(players[0]);
+        Board board = new Board();
+        Player player0 = players[0];
+        Piece piece0 = player0.getPieces()[0];
+        Piece piece1 = player0.getPieces()[1];
+        Piece piece2 = player0.getPieces()[2];
+        Piece piece3 = player0.getPieces()[3];
+        board.addPiece(piece0);
+        board.addPiece(piece1);
+        board.addPiece(piece2);
+
+        board.move(piece0, 62);
+        board.move(piece1, 61);
+        board.move(piece2, 61);
+        board.move(piece0, 2);
+        board.move(piece0, 4);
+
+        // GameControl gameControl = new GameControl();
+        // gameControl.addPlayer(players[0]);
         // gameControl.addPlayer(players[1]);
         // gameControl.addPlayer(players[2]);
         // gameControl.addPlayer(players[3]);
-        gameControl.printState();
+        // gameControl.printState();
 
-        gameControl.start();
+        // gameControl.start();
 
         // Player winner = gameControl.start();
 
