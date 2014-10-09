@@ -70,7 +70,7 @@ public class Square implements ISquare {
 
         // If position is empty we place the piece in the first spot
         if (isEmpty()) {
-            occupants.set(0, piece);
+            occupants.add(piece);
             piece.setSquare(this);
 
             return null;
@@ -80,7 +80,7 @@ public class Square implements ISquare {
             }
 
             // If position is already occupied by that piece
-            else if ((occupants.get(0) == piece) || (occupants.get(1) == piece)) {
+            else if (occupants.contains(piece)) {
                 return null;
             }
 
@@ -88,13 +88,13 @@ public class Square implements ISquare {
             // If it is of the same color as the one willing to move then we insert it in the second spot to make a
             // wall
             else if (occupants.get(0).getColor() == piece.getColor()) {
-                occupants.set(1, piece);
+                occupants.add(piece);
                 piece.setSquare(this);
 
                 return null;
             } else { // If they are not the same color then is a kill
-                Piece killed = occupants.get(0);
-                occupants.set(0, piece);
+                Piece killed = occupants.remove(0);
+                occupants.add(piece);
                 piece.setSquare(this);
 
                 return killed;
@@ -107,10 +107,13 @@ public class Square implements ISquare {
      */
     @Override
     public Piece remove() {
-        Piece ret = occupants.remove(0);
-        if (ret != null) {
+        Piece ret = null;
+
+        if (!occupants.isEmpty()) {
+            ret = occupants.remove(occupants.size() - 1);
             ret.setSquare(null);
         }
+
         return ret;
     }
 
@@ -119,15 +122,7 @@ public class Square implements ISquare {
      */
     @Override
     public boolean remove(final Piece piece) {
-        occupants.remove(piece);
-
-        if (occupants[1] == piece) {
-            occupants[1] = null;
-            piece.setSquare(null);
-            return true;
-        } else if (occupants[0] == piece) {
-            occupants[0] = occupants[1];
-            occupants[1] = null;
+        if (occupants.remove(piece)) {
             piece.setSquare(null);
             return true;
         }
@@ -137,11 +132,11 @@ public class Square implements ISquare {
 
     @Override
     public boolean isEmpty() {
-        return (occupants[0] == null);
+        return occupants.isEmpty();
     }
 
     @Override
     public boolean isWall() {
-        return (occupants[0] != null) && (occupants[1] != null);
+        return occupants.size() == 2;
     }
 }

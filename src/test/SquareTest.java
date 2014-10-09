@@ -14,6 +14,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * @author pganuza
  */
@@ -59,10 +61,9 @@ public class SquareTest {
      */
     @Test
     public void testGetOccupants0() {
-        Piece[] occupants = square.getOccupants();
+        List<Piece> occupants = square.getOccupants();
 
-        Assert.assertNull(occupants[0]);
-        Assert.assertNull(occupants[1]);
+        Assert.assertTrue(occupants.isEmpty());
     }
 
     /**
@@ -71,10 +72,10 @@ public class SquareTest {
     @Test
     public void testGetOccupants1() {
         square.add(pieceBlue0);
-        Piece[] occupants = square.getOccupants();
+        List<Piece> occupants = square.getOccupants();
 
-        Assert.assertEquals(pieceBlue0, occupants[0]);
-        Assert.assertNull(occupants[1]);
+        Assert.assertEquals(pieceBlue0, occupants.get(0));
+        Assert.assertEquals(1, occupants.size());
     }
 
     /**
@@ -84,10 +85,11 @@ public class SquareTest {
     public void testGetOccupants2() {
         square.add(pieceBlue0);
         square.add(pieceBlue1);
-        Piece[] occupants = square.getOccupants();
+        List<Piece> occupants = square.getOccupants();
 
-        Assert.assertEquals(pieceBlue0, occupants[0]);
-        Assert.assertEquals(pieceBlue1, occupants[1]);
+        Assert.assertEquals(pieceBlue0, occupants.get(0));
+        Assert.assertEquals(pieceBlue1, occupants.get(1));
+        Assert.assertEquals(2, occupants.size());
     }
 
     /**
@@ -122,10 +124,10 @@ public class SquareTest {
     /**
      * Test method for {@link game.Square#add(game.Piece)}.
      */
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAddSamePieceTwice() {
         Assert.assertNull(square.add(pieceBlue0));
-        square.add(pieceBlue0);
+        Assert.assertNull(square.add(pieceBlue0));
     }
 
     /**
@@ -184,10 +186,10 @@ public class SquareTest {
     public void testRemove2Occupants() {
         square.add(pieceBlue0);
         square.add(pieceBlue1);
-        Assert.assertEquals(pieceBlue0, square.remove());
-        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertEquals(pieceBlue1, square.remove());
         Assert.assertNull(pieceBlue1.getSquare());
+        Assert.assertEquals(pieceBlue0, square.remove());
+        Assert.assertNull(pieceBlue0.getSquare());
         Assert.assertNull(square.remove());
     }
 

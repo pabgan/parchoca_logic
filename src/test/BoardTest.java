@@ -238,6 +238,8 @@ public class BoardTest {
         board.addPiece(pieceBlue2);
         board.addPiece(pieceGreen0);
         board.addPiece(pieceGreen1);
+        board.addPiece(pieceGreen2);
+        board.addPiece(pieceGreen3);
         board.addPiece(pieceRed0);
         board.move(pieceBlue0, 4);
         board.move(pieceBlue1, 4);
@@ -245,6 +247,12 @@ public class BoardTest {
         board.move(pieceRed0, 2);
         board.move(pieceGreen0, 1);
         board.move(pieceGreen1, 1);
+        board.move(pieceGreen2, 1);
+        board.move(pieceGreen3, 1);
+        Assert.assertEquals(5, pieceGreen0.getSquare().getNumber());
+        Assert.assertEquals(5, pieceGreen1.getSquare().getNumber());
+        Assert.assertEquals(1, pieceGreen2.getSquare().getNumber());
+        Assert.assertEquals(1, pieceGreen3.getSquare().getNumber());
         Assert.assertEquals(20, board.move(pieceBlue2, 3));
         Assert.assertEquals(2, pieceBlue2.getSquare().getNumber());
         Assert.assertTrue(board.isAtHome(pieceRed0));
