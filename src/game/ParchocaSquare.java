@@ -11,10 +11,15 @@ import java.util.ArrayList;
 
 public class ParchocaSquare implements ISquare {
     private final ArrayList<Piece> occupants;
-    private final Square linkedSquare;
+    private ISquare linkedSquare;
 
-    public ParchocaSquare(final Square linkedSquare) {
+    public ParchocaSquare(final ISquare linkedSquare) {
         this.occupants = new ArrayList<Piece>();
+        this.linkedSquare = linkedSquare;
+    }
+
+    @Override
+    public void setLinkedSquare(final ISquare linkedSquare) {
         this.linkedSquare = linkedSquare;
     }
 
@@ -71,12 +76,17 @@ public class ParchocaSquare implements ISquare {
     }
 
     @Override
-    public Square getLinkedSquare() {
+    public void setPenalty(final int penalty) {
+        // Nothing to do
+    }
+
+    @Override
+    public ISquare getLinkedSquare() {
         return linkedSquare;
     }
 
     @Override
-    public Piece[] getOccupants() {
-        return (Piece[]) occupants.toArray();
+    public ArrayList<Piece> getOccupants() {
+        return (ArrayList<Piece>) occupants.clone();
     }
 }

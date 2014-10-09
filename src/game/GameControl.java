@@ -33,6 +33,7 @@ public class GameControl {
         // TODO ronda de la humillación
         // TODO 6 con todas las fichas fueras es 7
         // TODO penalizaciones
+        // TODO no más tiradas si te sucede algo mal
         while (!gameOver) {
             playerCurrent = playerIterator.nextPlayer();
 

@@ -4,6 +4,8 @@
 
 package game;
 
+import java.util.List;
+
 /**
  * @author TCPsi
  */
@@ -19,14 +21,24 @@ public interface ISquare {
     public int getPenalty();
 
     /**
+     * Sets the penalty
+     */
+    public void setPenalty(int penalty);
+
+    /**
      * @return the square to where the piece has to jump from here
      */
-    public Square getLinkedSquare();
+    public ISquare getLinkedSquare();
+
+    /**
+     * Sets the square to where the piece has to jump from here
+     */
+    public void setLinkedSquare(ISquare linkedSquare);
 
     /**
      * @return an array containing the pieces that are in this square
      */
-    public Piece[] getOccupants();
+    public List<Piece> getOccupants();
 
     /**
      * @param piece

@@ -26,9 +26,42 @@ public class Board {
         parchocaSquare = new ParchocaSquare(null);
         this.board.add(homeSquare);
         for (int i = 1; i < BOARD_SIZE; i++) {
-            board.add(new Square(i, 0, null));
+            board.add(new Square(i));
         }
         this.board.add(parchocaSquare);
+
+        setLinkedSquares();
+        setPenaltySquares();
+    }
+
+    private void setLinkedSquares() {
+        board.get(1).setLinkedSquare(board.get(5));
+        board.get(5).setLinkedSquare(board.get(9));
+        board.get(6).setLinkedSquare(board.get(12));
+        board.get(9).setLinkedSquare(board.get(14));
+        board.get(12).setLinkedSquare(board.get(6));
+        board.get(14).setLinkedSquare(board.get(18));
+        board.get(18).setLinkedSquare(board.get(23));
+        board.get(23).setLinkedSquare(board.get(27));
+        board.get(26).setLinkedSquare(board.get(53));
+        board.get(27).setLinkedSquare(board.get(32));
+        board.get(32).setLinkedSquare(board.get(36));
+        board.get(26).setLinkedSquare(board.get(53));
+        board.get(36).setLinkedSquare(board.get(41));
+        board.get(41).setLinkedSquare(board.get(45));
+        board.get(45).setLinkedSquare(board.get(50));
+        board.get(50).setLinkedSquare(board.get(54));
+        board.get(53).setLinkedSquare(board.get(26));
+        board.get(54).setLinkedSquare(board.get(59));
+        board.get(58).setLinkedSquare(board.get(0));
+        board.get(59).setLinkedSquare(board.get(63));
+    }
+
+    private void setPenaltySquares() {
+        board.get(19).setPenalty(-1);
+        board.get(31).setPenalty(-1);
+        board.get(42).setPenalty(-2);
+        board.get(52).setPenalty(-1);
     }
 
     public boolean addPiece(final Piece piece) {
@@ -43,6 +76,9 @@ public class Board {
     }
 
     public boolean killPiece(final Piece piece) {
+        if (piece == null) {
+            throw new IllegalArgumentException("Need a piece to kill.");
+        }
         if (homeSquare.contains(piece) || parchocaSquare.contains(piece)) {
             throw new IllegalStateException("Can't kill a piece when it is not on the road!");
         }
@@ -67,17 +103,25 @@ public class Board {
 
         ISquare startSquare = piece.getSquare();
         int startSquareNumber = startSquare.getNumber();
-
         int finalSquareNumber = countJumps(startSquareNumber, jumps, true);
+
         ISquare finalSquare = board.get(finalSquareNumber);
+        ISquare linkedSquare = finalSquare.getLinkedSquare();
+
+        if (linkedSquare != null && !linkedSquare.isWall()) {
+            finalSquare = linkedSquare;
+        }
+
+        return executeMove(piece, finalSquare);
+    }
+
+    private int executeMove(final Piece piece, final ISquare finalSquare) {
         int ret = 0;
 
-        // Now we execute the move
         piece.getSquare().remove(piece);
         Piece killedPiece = finalSquare.add(piece);
 
         if (killedPiece != null) {
-            killedPiece.setSquare(homeSquare);
             homeSquare.add(killedPiece);
             ret = 20;
         }
@@ -89,50 +133,12 @@ public class Board {
         }
 
         return ret;
-    }
 
-    // private int countJumps(final int startSquare, final int jumps, final boolean forward) {
-    // if (jumps == 0) {
-    // Square linkedSquare = board.get(startSquare).getLinkedSquare();
-    //
-    // if (linkedSquare != null && !linkedSquare.isWall()) {
-    // return linkedSquare.getNumber();
-    // } else {
-    // return startSquare;
-    // }
-    // } else {
-    // if (forward) {
-    // if (startSquare == board.size() - 1) { // If we have reached the end of the board
-    // return countJumps(startSquare, jumps, false);
-    // } else if (board.get(startSquare + 1).isWall()) { // If we have not reached the end of the board but
-    // // next square is a wall
-    // if (board.get(startSquare - 1).isWall()) { // If previous square is also a wall
-    // return startSquare;
-    // } else {
-    // return countJumps(startSquare, jumps, false);
-    // }
-    // } else {
-    // return countJumps(startSquare + 1, jumps - 1, true);
-    // }
-    // } else {
-    // if (board.get(startSquare - 1).isWall()) {
-    // return countJumps(startSquare, jumps, true);
-    // } else {
-    // return countJumps(startSquare - 1, jumps - 1, false);
-    // }
-    // }
-    // }
-    // }
+    }
 
     private int countJumps(final int startSquare, final int jumps, final boolean forward) {
         if (jumps == 0) {
-            Square linkedSquare = board.get(startSquare).getLinkedSquare();
-
-            if (linkedSquare != null && !linkedSquare.isWall()) {
-                return linkedSquare.getNumber();
-            } else {
-                return startSquare;
-            }
+            return startSquare;
         } else {
             if (forward) {
                 if (mayImoveIn(startSquare + 1)) { // If I can move to next square
@@ -255,14 +261,14 @@ public class Board {
     }
 
     private String occupantsToString(final int i) {
-        Piece[] occupants = board.get(i).getOccupants();
+        List<Piece> occupants = board.get(i).getOccupants();
 
-        if (occupants[0] == null) {
+        if (occupants.get(0) == null) {
             return "    ";
-        } else if (occupants[1] == null) {
-            return " " + occupants[0] + "  ";
+        } else if (occupants.get(1) == null) {
+            return " " + occupants.get(0) + "  ";
         } else {
-            return " " + occupants[0] + occupants[1] + " ";
+            return " " + occupants.get(0) + occupants.get(1) + " ";
         }
     }
 }

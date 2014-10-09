@@ -4,7 +4,6 @@
 
 package test;
 
-import static org.junit.Assert.fail;
 import game.Board;
 import game.Piece;
 import game.Piece.Color;
@@ -181,7 +180,33 @@ public class BoardTest {
      */
     @Test
     public void testMovePieceToLinkedSquare() {
-        fail("Not yet implemented");
+        board.addPiece(pieceBlue0);
+        board.move(pieceBlue0, 1);
+        Assert.assertEquals(5, pieceBlue0.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMovePieceToLinkedSquareBackwards() {
+        board.addPiece(pieceBlue0);
+        board.move(pieceBlue0, 12);
+        Assert.assertEquals(6, pieceBlue0.getSquare().getNumber());
+    }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testMovePieceToLinkedSquareThrougWall() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceBlue1);
+        board.addPiece(pieceBlue2);
+        board.move(pieceBlue0, 2);
+        board.move(pieceBlue1, 2);
+        board.move(pieceBlue2, 2);
+        Assert.assertEquals(5, pieceBlue2.getSquare().getNumber());
     }
 
     /**
@@ -194,13 +219,13 @@ public class BoardTest {
         board.addPiece(pieceBlue2);
         board.addPiece(pieceGreen0);
         board.addPiece(pieceGreen1);
-        board.move(pieceBlue0, 3);
-        board.move(pieceBlue1, 3);
-        board.move(pieceBlue2, 2);
-        board.move(pieceGreen0, 1);
-        board.move(pieceGreen1, 1);
+        board.move(pieceBlue0, 4);
+        board.move(pieceBlue1, 4);
+        board.move(pieceBlue2, 3);
+        board.move(pieceGreen0, 2);
+        board.move(pieceGreen1, 2);
         board.move(pieceBlue2, 5);
-        Assert.assertEquals(2, pieceBlue2.getSquare().getNumber());
+        Assert.assertEquals(3, pieceBlue2.getSquare().getNumber());
     }
 
     /**
@@ -239,7 +264,7 @@ public class BoardTest {
         board.move(pieceBlue0, 2);
         board.move(pieceBlue1, 2);
         board.move(pieceBlue2, 2);
-        Assert.assertEquals(1, pieceBlue2.getSquare().getNumber());
+        Assert.assertEquals(5, pieceBlue2.getSquare().getNumber());
     }
 
     /**

@@ -4,6 +4,9 @@
 
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a square in the board. It is responsible of his own legal state.
  * 
@@ -12,15 +15,13 @@ package game;
 public class Square implements ISquare {
     // Square number from 0-home to 63-parchoca
     protected final int number;
-    protected final Piece[] occupants;
-    protected final int penalty;
-    protected final Square linkedSquare;
+    protected final List<Piece> occupants;
+    protected int penalty;
+    protected ISquare linkedSquare;
 
-    public Square(final int number, final int penalty, final Square linkedSquare) {
+    public Square(final int number) {
         this.number = number;
-        occupants = new Piece[2];
-        this.penalty = penalty;
-        this.linkedSquare = linkedSquare;
+        occupants = new ArrayList<Piece>(2);
     }
 
     @Override
@@ -34,27 +35,31 @@ public class Square implements ISquare {
     }
 
     @Override
-    public Square getLinkedSquare() {
+    public void setPenalty(final int penalty) {
+        this.penalty = penalty;
+    }
+
+    @Override
+    public ISquare getLinkedSquare() {
         return linkedSquare;
+    }
+
+    @Override
+    public void setLinkedSquare(final ISquare linkedSquare) {
+        this.linkedSquare = linkedSquare;
     }
 
     /**
      * @return Returns the pieces occupying the position, null if it is empty.
      */
     @Override
-    public Piece[] getOccupants() {
-        Piece[] occupantsClone = new Piece[occupants.length];
-
-        for (int i = 0; i < occupants.length; i++) {
-            occupantsClone[i] = occupants[i];
-        }
-
-        return occupantsClone;
+    public List<Piece> getOccupants() {
+        return occupants;
     }
 
     @Override
     public boolean contains(final Piece piece) {
-        return occupants[0] == piece || occupants[1] == piece;
+        return occupants.contains(piece);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class Square implements ISquare {
 
         // If position is empty we place the piece in the first spot
         if (isEmpty()) {
-            occupants[0] = piece;
+            occupants.set(0, piece);
             piece.setSquare(this);
 
             return null;
@@ -75,21 +80,21 @@ public class Square implements ISquare {
             }
 
             // If position is already occupied by that piece
-            else if ((occupants[0] == piece) || (occupants[1] == piece)) {
-                throw new IllegalStateException("Illegal movement. Piece is already in this square.");
+            else if ((occupants.get(0) == piece) || (occupants.get(1) == piece)) {
+                return null;
             }
 
             // If position is not empty nor a wall there must be a piece in the first spot
             // If it is of the same color as the one willing to move then we insert it in the second spot to make a
             // wall
-            else if (occupants[0].getColor() == piece.getColor()) {
-                occupants[1] = piece;
+            else if (occupants.get(0).getColor() == piece.getColor()) {
+                occupants.set(1, piece);
                 piece.setSquare(this);
 
                 return null;
             } else { // If they are not the same color then is a kill
-                Piece killed = occupants[0];
-                occupants[0] = piece;
+                Piece killed = occupants.get(0);
+                occupants.set(0, piece);
                 piece.setSquare(this);
 
                 return killed;
@@ -102,14 +107,10 @@ public class Square implements ISquare {
      */
     @Override
     public Piece remove() {
-        Piece ret = occupants[0];
-        occupants[0] = occupants[1];
-        occupants[1] = null;
-
+        Piece ret = occupants.remove(0);
         if (ret != null) {
             ret.setSquare(null);
         }
-
         return ret;
     }
 
@@ -118,16 +119,16 @@ public class Square implements ISquare {
      */
     @Override
     public boolean remove(final Piece piece) {
+        occupants.remove(piece);
+
         if (occupants[1] == piece) {
             occupants[1] = null;
             piece.setSquare(null);
-
             return true;
         } else if (occupants[0] == piece) {
             occupants[0] = occupants[1];
             occupants[1] = null;
             piece.setSquare(null);
-
             return true;
         }
 

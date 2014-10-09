@@ -35,7 +35,7 @@ public class SquareTest {
      */
     @Before
     public void setUp() throws Exception {
-        square = new Square(0, 0, null);
+        square = new Square(0);
     }
 
     /**
@@ -45,13 +45,13 @@ public class SquareTest {
     public void testGetNumberAndPenalty() {
         Assert.assertEquals(0, square.getNumber());
 
-        square = new Square(Integer.MIN_VALUE, Integer.MIN_VALUE, null);
+        square = new Square(Integer.MIN_VALUE);
         Assert.assertEquals(Integer.MIN_VALUE, square.getNumber());
-        Assert.assertEquals(Integer.MIN_VALUE, square.getPenalty());
+        Assert.assertEquals(0, square.getPenalty());
 
-        square = new Square(Integer.MAX_VALUE, Integer.MAX_VALUE, null);
+        square = new Square(Integer.MAX_VALUE);
         Assert.assertEquals(Integer.MAX_VALUE, square.getNumber());
-        Assert.assertEquals(Integer.MAX_VALUE, square.getPenalty());
+        Assert.assertEquals(0, square.getPenalty());
     }
 
     /**

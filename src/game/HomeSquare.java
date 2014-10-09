@@ -11,10 +11,15 @@ import java.util.ArrayList;
 
 public class HomeSquare implements ISquare {
     private final ArrayList<Piece> occupants;
-    private final Square linkedSquare;
+    private ISquare linkedSquare;
 
-    public HomeSquare(final int penalty, final Square linkedSquare) {
+    public HomeSquare(final int penalty, final ISquare linkedSquare) {
         this.occupants = new ArrayList<Piece>();
+        this.linkedSquare = linkedSquare;
+    }
+
+    @Override
+    public void setLinkedSquare(final ISquare linkedSquare) {
         this.linkedSquare = linkedSquare;
     }
 
@@ -25,9 +30,9 @@ public class HomeSquare implements ISquare {
         }
 
         // If position is already occupied by that piece
-        else if (occupants.contains(piece)) {
-            throw new IllegalStateException("Illegal movement. Can not move to the same position.");
-        }
+        // else if (occupants.contains(piece)) {
+        // throw new IllegalStateException("Illegal movement. Can not move to the same position.");
+        // }
 
         occupants.add(piece);
         piece.setSquare(this);
@@ -80,12 +85,17 @@ public class HomeSquare implements ISquare {
     }
 
     @Override
-    public Square getLinkedSquare() {
+    public void setPenalty(final int penalty) {
+        // Nothing to do
+    }
+
+    @Override
+    public ISquare getLinkedSquare() {
         return linkedSquare;
     }
 
     @Override
-    public Piece[] getOccupants() {
-        return (Piece[]) occupants.toArray();
+    public ArrayList<Piece> getOccupants() {
+        return (ArrayList<Piece>) occupants.clone();
     }
 }
