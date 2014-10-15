@@ -87,11 +87,11 @@ public class Board {
     }
 
     /**
-     * Is responsible of executing the movement in case it is valid.
+     * Is responsible of executing the movement in case it is valid
      * 
      * @param piece
      * @param jumps
-     * @return number of extra jumps if > 0 or penalty turns if < 0
+     * @return number of extra jumps if piece achieved Parchoca or killed someone or penalty turns if < 0
      */
     public int move(final Piece piece, final int jumps) {
         if (piece == null || isAtParchoca(piece)) {
@@ -262,13 +262,15 @@ public class Board {
 
     private String occupantsToString(final int i) {
         List<Piece> occupants = board.get(i).getOccupants();
+        int numberOfOccupants = occupants.size();
 
-        if (occupants.get(0) == null) {
-            return "    ";
-        } else if (occupants.get(1) == null) {
-            return " " + occupants.get(0) + "  ";
-        } else {
-            return " " + occupants.get(0) + occupants.get(1) + " ";
+        switch (numberOfOccupants) {
+            case 1:
+                return " " + occupants.get(0) + "  ";
+            case 2:
+                return " " + occupants.get(0) + occupants.get(1) + " ";
+            default:
+                return "    ";
         }
     }
 }

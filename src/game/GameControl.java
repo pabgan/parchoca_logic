@@ -3,14 +3,17 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class GameControl {
     private final Board board;
     private final PlayerIterator playerIterator;
+    private final List<Player> finishedPlayers;
 
     public GameControl() {
         this.board = new Board();
         this.playerIterator = new PlayerIterator();
+        this.finishedPlayers = new ArrayList<Player>();
     }
 
     public void addPlayer(final Player player) {
@@ -28,22 +31,22 @@ public class GameControl {
         Player playerCurrent = null;
         Piece pieceToMove = null;
         boolean gameOver = false;
-        int jumps6 = 0;
-        int jumps = 0;
         // TODO ronda de la humillación
         // TODO 6 con todas las fichas fueras es 7
         // TODO penalizaciones
         // TODO no más tiradas si te sucede algo mal
-        while (!gameOver) {
+        // TODO caer en oca es tirada extra
+        do {
             playerCurrent = playerIterator.nextPlayer();
+            int jumps6 = 0;
+            int jumps = 0;
 
-            if (playerCurrent.getPenalty() <= 0) {
+            if (!finishedPlayers.contains(playerCurrent)) {
                 do {
                     jumps = Dice.throwDice();
                     if (jumps == 6) {
                         jumps6++;
                     }
-                    System.out.println("Player: " + playerCurrent.getName() + "\nDice: " + jumps + "\n" + board);
 
                     if (jumps6 == 3) {
                         board.killPiece(pieceToMove);
@@ -56,26 +59,44 @@ public class GameControl {
                             extraJumps = board.move(pieceToMove, jumps);
 
                             if (extraJumps == 10) {
-                                gameOver = isGameOver();
+                                finishedPlayers.add(playerCurrent);
+                                for (Piece piece : playerCurrent.getPieces()) {
+                                    if (!board.isAtParchoca(piece)) {
+                                        finishedPlayers.remove(playerCurrent);
+                                    }
+                                }
+                                gameOver = gameOver();
                             }
-                        } while (extraJumps < 0);
+                        } while (extraJumps > 0);
 
                         playerCurrent.setPenalty(extraJumps);
                     }
+                    System.out.println("Player: " + playerCurrent.getName() + " - " + playerCurrent.getColor()
+                            + "\nDice: " + jumps + "\n" + board);
                 } while (jumps == 6 && !gameOver);
             }
-        }
+        } while (!gameOver);
 
         return playerCurrent;
     }
 
-    private boolean isGameOver() {
-        return false;
-        // if (board..whoIsAtParchoca().size() == playerIterator.getPlayers().size() * 2) {
-        // return true;
-        // } else {
-        // return false;
-        // }
+    private boolean gameOver() {
+        return finishedPlayers.size() == playerIterator.size();
+    }
+
+    private boolean playerCanMove(final Player player) {
+        boolean canMove = !finishedPlayers.contains(player);
+
+        if (canMove) {
+            int penalty = player.getPenalty();
+
+            if (penalty > 0) {
+                canMove = false;
+                player.setPenalty(penalty - 1);
+            }
+        }
+
+        return canMove;
     }
 
     public void printState() {
@@ -95,11 +116,14 @@ public class GameControl {
                 throw new IllegalArgumentException("Can't add same player twice");
             }
             players.add(player);
-
         }
 
         public ArrayList<Player> getPlayers() {
             return players;
+        }
+
+        public int size() {
+            return players.size();
         }
 
         public Player nextPlayer() {
@@ -112,6 +136,7 @@ public class GameControl {
             if (playerIterator.hasNext()) {
                 return playerIterator.next();
             } else {
+                players.removeAll(finishedPlayers);
                 playerIterator = players.iterator();
 
                 return playerIterator.next();
