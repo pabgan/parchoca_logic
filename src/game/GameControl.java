@@ -8,12 +8,13 @@ import java.util.List;
 public class GameControl {
     private final Board board;
     private final PlayerIterator playerIterator;
-    private final List<Player> finishedPlayers;
+
+    // private final List<Player> finishedPlayers;
 
     public GameControl() {
         this.board = new Board();
         this.playerIterator = new PlayerIterator();
-        this.finishedPlayers = new ArrayList<Player>();
+        // this.finishedPlayers = new ArrayList<Player>();
     }
 
     public void addPlayer(final Player player) {
@@ -56,9 +57,10 @@ public class GameControl {
 
                         do {
                             pieceToMove = playerCurrent.selectPieceToMove(board, jumps);
-                            extraJumps = board.move(pieceToMove, jumps);
+                            int moveResult = board.move(pieceToMove, jumps);
+                            extraJumps = 
 
-                            if (extraJumps == 10) {
+                            if (extraJumps == 10 || extraJumps == 11) {
                                 finishedPlayers.add(playerCurrent);
                                 for (Piece piece : playerCurrent.getPieces()) {
                                     if (!board.isAtParchoca(piece)) {

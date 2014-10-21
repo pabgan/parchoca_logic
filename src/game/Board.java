@@ -87,11 +87,11 @@ public class Board {
     }
 
     /**
-     * Is responsible of executing the movement in case it is valid
+     * Is responsible of executing the movement in case it is valid and informing of the result.
      * 
      * @param piece
-     * @param jumps
-     * @return number of extra jumps if piece achieved Parchoca or killed someone or penalty turns if < 0
+     * @param jumps number of jumps to make
+     * @return 20 = piece killed smbd; 10 = piece in Parchoca; +1 = extra turn; 0 = nothing special; <0 = penalty;
      */
     public int move(final Piece piece, final int jumps) {
         if (piece == null || isAtParchoca(piece)) {
@@ -100,6 +100,8 @@ public class Board {
         if (jumps < 1) {
             throw new IllegalArgumentException("Can't jump less than 1 square.");
         }
+
+        int result = 0;
 
         ISquare startSquare = piece.getSquare();
         int startSquareNumber = startSquare.getNumber();
@@ -110,9 +112,13 @@ public class Board {
 
         if (linkedSquare != null && !linkedSquare.isWall()) {
             finalSquare = linkedSquare;
+
+            if (linkedSquare.getNumber() > finalSquareNumber) {
+                result += 1;
+            }
         }
 
-        return executeMove(piece, finalSquare);
+        return result + executeMove(piece, finalSquare);
     }
 
     private int executeMove(final Piece piece, final ISquare finalSquare) {
