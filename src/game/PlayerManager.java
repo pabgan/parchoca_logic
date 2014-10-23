@@ -1,3 +1,4 @@
+
 package game;
 
 import java.util.ArrayList;
@@ -29,22 +30,22 @@ public class PlayerManager {
     public int size() {
         return players.size();
     }
-    
+
     public boolean playerHasFinished() {
-    	int currentPlayerIndex = playersCurrentlyPlaying.indexOf(currentPlayer);
-    	playersCurrentlyPlaying.remove(currentPlayer);
-    	
-    	if (playersCurrentlyPlaying.isEmpty()) {
-    		return true;
-    	} else {
-    		playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
-    		
-    		for (int i = 0; i < currentPlayerIndex; i++) {
-    			currentPlayer = playersCurrentlyPlayingIterator.next();
-    		}
-    		
-    		return false;
-    	}
+        int currentPlayerIndex = playersCurrentlyPlaying.indexOf(currentPlayer);
+        playersCurrentlyPlaying.remove(currentPlayer);
+
+        if (playersCurrentlyPlaying.isEmpty()) {
+            return true;
+        } else {
+            playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
+
+            for (int i = 0; i < currentPlayerIndex; i++) {
+                currentPlayer = playersCurrentlyPlayingIterator.next();
+            }
+
+            return false;
+        }
     }
 
     public Player nextPlayer() {
@@ -55,12 +56,12 @@ public class PlayerManager {
             this.playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
         }
         if (playersCurrentlyPlayingIterator.hasNext()) {
-        	currentPlayer = playersCurrentlyPlayingIterator.next();
+            currentPlayer = playersCurrentlyPlayingIterator.next();
         } else {
-            playersCurrentlyPlayingIterator = players.iterator();
+            playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
             currentPlayer = playersCurrentlyPlayingIterator.next();
         }
-        
+
         return currentPlayer;
     }
 }
