@@ -40,7 +40,7 @@ public class Player {
         this.strategy = strategy;
     }
 
-    public int getPenalty() {
+	public int getPenalty() {
         return penalty;
     }
 

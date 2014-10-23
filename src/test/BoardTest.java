@@ -9,9 +9,8 @@ import game.Piece;
 import game.Piece.Color;
 import game.Player;
 
-import junit.framework.Assert;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 

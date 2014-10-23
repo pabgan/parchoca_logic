@@ -42,7 +42,7 @@ public class Piece {
         return getColor().toString().substring(0, 1);
     }
 
-    public enum Color {
+    public static enum Color {
         red, green, yellow, blue
     }
 }

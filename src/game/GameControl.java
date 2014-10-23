@@ -7,18 +7,18 @@ import java.util.List;
 
 public class GameControl {
     private final Board board;
-    private final PlayerIterator playerIterator;
+    private final PlayerManager playerManager;
 
     // private final List<Player> finishedPlayers;
 
     public GameControl() {
         this.board = new Board();
-        this.playerIterator = new PlayerIterator();
+        this.playerManager = new PlayerManager();
         // this.finishedPlayers = new ArrayList<Player>();
     }
 
     public void addPlayer(final Player player) {
-        playerIterator.addPlayer(player);
+        playerManager.addPlayer(player);
         for (Piece piece : player.getPieces()) {
             board.addPiece(piece);
         }
@@ -26,16 +26,16 @@ public class GameControl {
 
     public Player start() {
         for (int i = 0; i < Dice.throwDice() - 1; i++) {
-            playerIterator.nextPlayer();
+            playerManager.nextPlayer();
         }
 
         Player playerCurrent = null;
         Piece pieceToMove = null;
         boolean gameOver = false;
-        // TODO ronda de la humillación
+        // TODO ronda de la humillaciÃ³n
         // TODO 6 con todas las fichas fueras es 7
         // TODO penalizaciones
-        // TODO no más tiradas si te sucede algo mal
+        // TODO no mÃ¡s tiradas si te sucede algo malo
         // TODO caer en oca es tirada extra
         do {
             playerCurrent = playerIterator.nextPlayer();
@@ -54,10 +54,25 @@ public class GameControl {
                         jumps = 0;
                     } else {
                         int extraJumps;
+                        boolean anotherTurn = false;
 
                         do {
                             pieceToMove = playerCurrent.selectPieceToMove(board, jumps);
                             int moveResult = board.move(pieceToMove, jumps);
+                            
+                            switch (moveResult) {
+							case 21:
+								anotherTurn = true;
+								extraJumps = 20;
+								break;
+							case 11:
+								anotherTurn = true;
+								extraJumps = 10;
+								break;
+
+							default:
+								break;
+							}
                             extraJumps = 
 
                             if (extraJumps == 10 || extraJumps == 11) {
@@ -103,46 +118,5 @@ public class GameControl {
 
     public void printState() {
         System.out.println(board);
-    }
-
-    private class PlayerIterator {
-        private Iterator<Player> playerIterator;
-        private final ArrayList<Player> players;
-
-        public PlayerIterator() {
-            players = new ArrayList<Player>();
-        }
-
-        public void addPlayer(final Player player) {
-            if (players.contains(player)) {
-                throw new IllegalArgumentException("Can't add same player twice");
-            }
-            players.add(player);
-        }
-
-        public ArrayList<Player> getPlayers() {
-            return players;
-        }
-
-        public int size() {
-            return players.size();
-        }
-
-        public Player nextPlayer() {
-            if (players.isEmpty()) {
-                throw new IllegalStateException("Can't select next player beacuse there ara no players");
-            }
-            if (playerIterator == null) {
-                this.playerIterator = players.iterator();
-            }
-            if (playerIterator.hasNext()) {
-                return playerIterator.next();
-            } else {
-                players.removeAll(finishedPlayers);
-                playerIterator = players.iterator();
-
-                return playerIterator.next();
-            }
-        }
     }
 }
