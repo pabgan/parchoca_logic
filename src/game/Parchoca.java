@@ -42,8 +42,5 @@ public class Parchoca {
         // gameControl.printState();
 
         gameControl.start();
-
-        Player winner = gameControl.start();
-        System.out.println("Aaaand the winner iiiiis: " + winner.getName());
     }
 }

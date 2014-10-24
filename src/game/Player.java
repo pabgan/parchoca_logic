@@ -40,11 +40,23 @@ public class Player {
         this.strategy = strategy;
     }
 
-	public int getPenalty() {
+    public int getPenalty() {
         return penalty;
     }
 
+    public int getPenaltyAndDiscount() {
+        if (penalty > 0) {
+            return penalty--;
+        }
+
+        return 0;
+    }
+
     public void setPenalty(final int penalty) {
+        if (penalty < 0) {
+            throw new IllegalArgumentException();
+        }
+
         this.penalty = penalty;
     }
 
@@ -75,5 +87,14 @@ public class Player {
         }
 
         return strategy.selectMove(this, board, jumps);
+    }
+
+    public boolean allPiecesOut() {
+        for (Piece piece : pieces) {
+            if (piece.getSquare().getNumber() == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 }

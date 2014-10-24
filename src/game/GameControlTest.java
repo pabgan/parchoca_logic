@@ -57,12 +57,7 @@ public class GameControlTest {
         gameControl.addPlayer(players[1]);
         gameControl.addPlayer(players[2]);
         gameControl.addPlayer(players[3]);
-        gameControl.printState();
 
         gameControl.start();
-
-        Player winner = gameControl.start();
-        System.out.println("Aaaand the winner iiiiis: " + winner.getName());
     }
-
 }

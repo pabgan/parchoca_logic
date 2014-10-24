@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 package test;
 
@@ -9,11 +6,11 @@ import game.Piece.Color;
 import game.Player;
 import game.Square;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * @author pganuza

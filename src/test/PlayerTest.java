@@ -1,6 +1,3 @@
-/**
- * 
- */
 
 package test;
 
@@ -9,7 +6,6 @@ import game.Piece;
 import game.Piece.Color;
 import game.Player;
 import game.StupidPlayerStrategy;
-
 
 import org.junit.After;
 import org.junit.Assert;
@@ -146,14 +142,13 @@ public class PlayerTest {
     /**
      * Test method for {@link game.Player#setPenalty(int)}.
      */
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testSetPenaltyMinimum() {
         String playerName = "Test";
         int numPieces = 1;
         Player player = new Player(playerName, Color.blue, numPieces, null);
 
         player.setPenalty(Integer.MIN_VALUE);
-        Assert.assertEquals(Integer.MIN_VALUE, player.getPenalty());
     }
 
     /**
@@ -167,6 +162,19 @@ public class PlayerTest {
 
         player.setPenalty(Integer.MAX_VALUE);
         Assert.assertEquals(Integer.MAX_VALUE, player.getPenalty());
+    }
+
+    @Test
+    public void testDiscountAndGetPenalty() {
+        String playerName = "Test";
+        int numPieces = 1;
+        Player player = new Player(playerName, Color.blue, numPieces, null);
+
+        player.setPenalty(3);
+        Assert.assertEquals(3, player.getPenaltyAndDiscount());
+        Assert.assertEquals(2, player.getPenaltyAndDiscount());
+        Assert.assertEquals(1, player.getPenaltyAndDiscount());
+        Assert.assertEquals(0, player.getPenaltyAndDiscount());
     }
 
     /**

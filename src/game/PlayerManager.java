@@ -27,8 +27,12 @@ public class PlayerManager {
         return players;
     }
 
-    public int size() {
+    public int numberOfPlayers() {
         return players.size();
+    }
+
+    public int numberOfPlayersStillPlaying() {
+        return playersCurrentlyPlaying.size();
     }
 
     public boolean playerHasFinished() {
@@ -48,19 +52,26 @@ public class PlayerManager {
         }
     }
 
+    /**
+     * Handles penalties and everything
+     * 
+     * @return
+     */
     public Player nextPlayer() {
         if (players.isEmpty()) {
-            throw new IllegalStateException("Can't select next player beacuse there ara no players");
+            throw new IllegalStateException("Can't select next player beacuse there are no players");
         }
         if (playersCurrentlyPlayingIterator == null) {
             this.playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
         }
-        if (playersCurrentlyPlayingIterator.hasNext()) {
+
+        do {
+            if (!playersCurrentlyPlayingIterator.hasNext()) {
+                playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
+            }
+
             currentPlayer = playersCurrentlyPlayingIterator.next();
-        } else {
-            playersCurrentlyPlayingIterator = playersCurrentlyPlaying.iterator();
-            currentPlayer = playersCurrentlyPlayingIterator.next();
-        }
+        } while (currentPlayer.getPenaltyAndDiscount() > 0);
 
         return currentPlayer;
     }

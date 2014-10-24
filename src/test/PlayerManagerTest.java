@@ -77,4 +77,26 @@ public class PlayerManagerTest {
         playerManager.addPlayer(playerGreen);
         playerManager.nextPlayer();
     }
+
+    @Test
+    public void testNextPlayerWithPenalties() {
+        PlayerManager playerManager = new PlayerManager();
+        playerManager.addPlayer(playerBlue);
+        playerManager.addPlayer(playerGreen);
+        playerManager.addPlayer(playerRed);
+        playerBlue.setPenalty(3);
+        playerGreen.setPenalty(2);
+
+        Assert.assertEquals(playerRed, playerManager.nextPlayer());
+        Assert.assertEquals(playerRed, playerManager.nextPlayer());
+        Assert.assertEquals(playerGreen, playerManager.nextPlayer());
+        Assert.assertEquals(playerRed, playerManager.nextPlayer());
+        Assert.assertEquals(playerBlue, playerManager.nextPlayer());
+        Assert.assertEquals(playerGreen, playerManager.nextPlayer());
+        Assert.assertEquals(playerRed, playerManager.nextPlayer());
+        Assert.assertEquals(playerBlue, playerManager.nextPlayer());
+        Assert.assertEquals(playerGreen, playerManager.nextPlayer());
+        Assert.assertEquals(playerRed, playerManager.nextPlayer());
+
+    }
 }
