@@ -23,16 +23,20 @@ public class GameControl {
         }
 
         while (!gameOver()) {
+            System.out.println("************** Aún no hemos terminado ************************");
             // How many 6 in a row has the player had
             int result6 = 0;
 
             Player playerCurrent = playerManager.nextPlayer();
+            System.out.println("Le toca a " + playerCurrent.getName() + "." + playerCurrent.getColor());
             Piece pieceSelected = null;
-            boolean tiraOtraVez = false;
+            boolean tiraOtraVez = true;
 
-            do {
+            while (tiraOtraVez) {
+                tiraOtraVez = false;
                 int diceResult = Dice.throwDice();
                 int jumps = diceResult;
+                System.out.println("Dice: " + diceResult);
 
                 if (diceResult == 6) {
                     tiraOtraVez = true;
@@ -49,8 +53,9 @@ public class GameControl {
                 }
 
                 while (jumps > 0) {
+                    System.out.println("--------------------------- \nJumps: " + jumps);
                     pieceSelected = playerCurrent.selectPieceToMove(board, jumps);
-                    int moveResult = board.move(pieceSelected, diceResult);
+                    int moveResult = board.move(pieceSelected, jumps);
 
                     switch (moveResult) {
                         case 21:
@@ -73,15 +78,14 @@ public class GameControl {
                             playerCurrent.setPenalty(moveResult);
                     }
 
-                    System.out.println("Player: " + playerCurrent.getName() + "." + playerCurrent.getColor()
-                            + "\nDice: " + diceResult + "\nJumps: " + jumps + "\n" + board);
+                    System.out.println(board);
                 }
-            } while (tiraOtraVez);
+            }
         }
     }
 
     private boolean gameOver() {
-        return playerManager.numberOfPlayersStillPlaying() > 0;
+        return playerManager.numberOfPlayersStillPlaying() == 0;
     }
 
     public void printState() {

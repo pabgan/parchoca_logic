@@ -510,4 +510,21 @@ public class BoardTest {
         Assert.assertTrue(board.isAtParchoca(pieceBlue0));
         Assert.assertTrue(board.isAtParchoca(pieceGreen0));
     }
+
+    /**
+     * Test method for {@link game.Board#move(game.Piece, int)}.
+     */
+    @Test
+    public void testX() {
+        board.addPiece(pieceBlue0);
+        board.addPiece(pieceGreen0);
+        board.move(pieceBlue0, 3);
+        board.move(pieceGreen0, 3);
+        board.move(pieceGreen0, 20);
+        Assert.assertTrue(board.isAtHome(pieceBlue0));
+        Assert.assertEquals(27, pieceGreen0.getSquare().getNumber());
+        Assert.assertFalse(board.isSquareEmpty(27));
+        Assert.assertTrue(board.isSquareEmpty(12));
+        Assert.assertTrue(board.isSquareEmpty(3));
+    }
 }

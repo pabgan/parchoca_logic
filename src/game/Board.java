@@ -94,6 +94,7 @@ public class Board {
      * @return 20 = piece killed smbd; 10 = piece in Parchoca; +1 = extra turn; 0 = nothing special; <0 = penalty;
      */
     public int move(final Piece piece, final int jumps) {
+        // TODO si se mata en puente o dados hacia atrás no se cuenta 20
         if (piece == null || isAtParchoca(piece)) {
             throw new IllegalArgumentException("Need a piece to move and it should not be at Parchoca already.");
         }

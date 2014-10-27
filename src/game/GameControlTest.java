@@ -48,9 +48,9 @@ public class GameControlTest {
 
         Player[] players = new Player[4];
         players[0] = new Player(player0name, color0, 4, new StupidPlayerStrategy());
-        players[1] = new Player(player1name, color1, 4, new StupidPlayerStrategy());
+        players[1] = new Player(player1name, color1, 4, new RandomPlayerStrategy());
         players[2] = new Player(player2name, color2, 4, new StupidPlayerStrategy());
-        players[3] = new Player(player3name, color3, 4, new StupidPlayerStrategy());
+        players[3] = new Player(player3name, color3, 4, new RandomPlayerStrategy());
 
         GameControl gameControl = new GameControl();
         gameControl.addPlayer(players[0]);

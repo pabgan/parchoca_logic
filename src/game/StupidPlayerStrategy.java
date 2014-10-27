@@ -1,6 +1,7 @@
 
 package game;
 
+
 public class StupidPlayerStrategy implements IPlayerStrategy {
 
     @Override
