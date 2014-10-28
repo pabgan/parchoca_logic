@@ -75,7 +75,7 @@ public class GameControl {
                         default:
                             tiraOtraVez = false;
                             jumps = 0;
-                            playerCurrent.setPenalty(moveResult);
+                            playerCurrent.setPenalty(Math.abs(moveResult));
                     }
 
                     System.out.println(board);

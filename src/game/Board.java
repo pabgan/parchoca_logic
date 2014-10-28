@@ -94,7 +94,6 @@ public class Board {
      * @return 20 = piece killed smbd; 10 = piece in Parchoca; +1 = extra turn; 0 = nothing special; <0 = penalty;
      */
     public int move(final Piece piece, final int jumps) {
-        // TODO si se mata en puente o dados hacia atrás no se cuenta 20
         if (piece == null || isAtParchoca(piece)) {
             throw new IllegalArgumentException("Need a piece to move and it should not be at Parchoca already.");
         }
@@ -102,24 +101,21 @@ public class Board {
             throw new IllegalArgumentException("Can't jump less than 1 square.");
         }
 
-        int result = 0;
-
         ISquare startSquare = piece.getSquare();
-        int startSquareNumber = startSquare.getNumber();
-        int finalSquareNumber = countJumps(startSquareNumber, jumps, true);
+        ISquare finalSquare = board.get(countJumps(startSquare.getNumber(), jumps, true));
 
-        ISquare finalSquare = board.get(finalSquareNumber);
-        ISquare linkedSquare = finalSquare.getLinkedSquare();
+        if (finalSquare.getLinkedSquare() != null && !finalSquare.getLinkedSquare().isWall()) {
+            ISquare finalFinalSquare = finalSquare.getLinkedSquare();
 
-        if (linkedSquare != null && !linkedSquare.isWall()) {
-            finalSquare = linkedSquare;
-
-            if (linkedSquare.getNumber() > finalSquareNumber) {
-                result += 1;
+            if (finalFinalSquare.getNumber() > finalSquare.getNumber()) {
+                return executeMove(piece, finalFinalSquare) + 1;
+            } else {
+                executeMove(piece, finalFinalSquare);
+                return 0;
             }
         }
 
-        return result + executeMove(piece, finalSquare);
+        return executeMove(piece, finalSquare);
     }
 
     private int executeMove(final Piece piece, final ISquare finalSquare) {
