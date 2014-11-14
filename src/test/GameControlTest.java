@@ -2,8 +2,13 @@
  * 
  */
 
-package game;
+package test;
 
+import game.GameControl;
+import game.Piece;
+import game.Player;
+import game.RandomPlayerStrategy;
+import game.StupidPlayerStrategy;
 import game.Piece.Color;
 
 import org.junit.After;
