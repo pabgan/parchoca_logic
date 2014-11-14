@@ -17,12 +17,12 @@ import java.util.List;
  */
 public class SquareTest {
     Square square;
-    Player playerBlue = new Player("Blue", Color.blue, 4);
+    Player playerBlue = new Player("Blue", Color.BLUE, 4);
     Piece pieceBlue0 = playerBlue.getPieces()[0];
     Piece pieceBlue1 = playerBlue.getPieces()[1];
     Piece pieceBlue2 = playerBlue.getPieces()[2];
     Piece pieceBlue3 = playerBlue.getPieces()[3];
-    Player playerRed = new Player("Red", Color.red, 4);
+    Player playerRed = new Player("Red", Color.RED, 4);
     Piece pieceRed0 = playerRed.getPieces()[0];
     Piece pieceRed1 = playerRed.getPieces()[1];
     Piece pieceRed2 = playerRed.getPieces()[2];

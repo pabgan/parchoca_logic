@@ -60,7 +60,7 @@ public class PlayerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testPlayerZeroPieces() {
-        Player player = new Player("Test", Color.blue, 0);
+        Player player = new Player("Test", Color.BLUE, 0);
     }
 
     /**
@@ -68,7 +68,7 @@ public class PlayerTest {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testPlayerNegativePieces() {
-        Player player = new Player("Test", Color.blue, Integer.MIN_VALUE);
+        Player player = new Player("Test", Color.BLUE, Integer.MIN_VALUE);
     }
 
     /**
@@ -77,9 +77,9 @@ public class PlayerTest {
     @Test
     public void testPlayerOnePiece() {
         String playerName = "Test";
-        Player player = new Player(playerName, Color.blue, 1);
+        Player player = new Player(playerName, Color.BLUE, 1);
         Assert.assertEquals(player.getName(), playerName);
-        Assert.assertEquals(Color.blue, player.getColor());
+        Assert.assertEquals(Color.BLUE, player.getColor());
         Assert.assertEquals(0, player.getPenalty());
         Piece[] pieces = player.getPieces();
         Assert.assertNotNull(pieces);
@@ -93,9 +93,9 @@ public class PlayerTest {
     @Test
     public void testPlayerTenPieces() {
         String playerName = "Test";
-        Player player = new Player(playerName, Color.blue, 10);
+        Player player = new Player(playerName, Color.BLUE, 10);
         Assert.assertEquals(player.getName(), playerName);
-        Assert.assertEquals(Color.blue, player.getColor());
+        Assert.assertEquals(Color.BLUE, player.getColor());
         Assert.assertEquals(0, player.getPenalty());
         Piece[] pieces = player.getPieces();
         Assert.assertNotNull(pieces);
@@ -113,9 +113,9 @@ public class PlayerTest {
     public void testPlayerStrategyNull() {
         String playerName = "Test";
         int numPieces = 4;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
         Assert.assertEquals(player.getName(), playerName);
-        Assert.assertEquals(Color.blue, player.getColor());
+        Assert.assertEquals(Color.BLUE, player.getColor());
         Assert.assertEquals(0, player.getPenalty());
         Piece[] pieces = player.getPieces();
         Assert.assertNotNull(pieces);
@@ -133,7 +133,7 @@ public class PlayerTest {
     public void testSetPenaltyZero() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
 
         player.setPenalty(0);
         Assert.assertEquals(0, player.getPenalty());
@@ -146,7 +146,7 @@ public class PlayerTest {
     public void testSetPenaltyMinimum() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
 
         player.setPenalty(Integer.MIN_VALUE);
     }
@@ -158,7 +158,7 @@ public class PlayerTest {
     public void testSetPenaltyMaximum() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
 
         player.setPenalty(Integer.MAX_VALUE);
         Assert.assertEquals(Integer.MAX_VALUE, player.getPenalty());
@@ -168,7 +168,7 @@ public class PlayerTest {
     public void testDiscountAndGetPenalty() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
 
         player.setPenalty(3);
         Assert.assertEquals(3, player.getPenaltyAndDiscount());
@@ -184,7 +184,7 @@ public class PlayerTest {
     public void testSelectPieceToMoveNullBard() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
         player.selectPieceToMove(null, 0);
     }
 
@@ -195,7 +195,7 @@ public class PlayerTest {
     public void testSelectPieceToMove0Jumps() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
         player.selectPieceToMove(new Board(), 0);
     }
 
@@ -206,7 +206,7 @@ public class PlayerTest {
     public void testSelectPieceToMoveMaxJumps() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, new StupidPlayerStrategy());
+        Player player = new Player(playerName, Color.BLUE, numPieces, new StupidPlayerStrategy());
         Assert.assertEquals(player.getPieces()[0], player.selectPieceToMove(new Board(), Integer.MAX_VALUE));
     }
 
@@ -217,7 +217,7 @@ public class PlayerTest {
     public void testSelectPieceToMoveMinJumps() {
         String playerName = "Test";
         int numPieces = 1;
-        Player player = new Player(playerName, Color.blue, numPieces, null);
+        Player player = new Player(playerName, Color.BLUE, numPieces, null);
         player.selectPieceToMove(new Board(), Integer.MIN_VALUE);
     }
 

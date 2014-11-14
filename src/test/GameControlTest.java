@@ -40,16 +40,16 @@ public class GameControlTest {
     @Test
     public void testStart() {
         String player0name = "Pablo0";
-        Color color0 = Color.yellow;
+        Color color0 = Color.YELLOW;
 
         String player1name = "Juan1";
-        Color color1 = Color.blue;
+        Color color1 = Color.BLUE;
 
         String player2name = "Echegu2";
-        Color color2 = Color.green;
+        Color color2 = Color.GREEN;
 
         String player3name = "Kike3";
-        Color color3 = Color.red;
+        Color color3 = Color.RED;
 
         Player[] players = new Player[4];
         players[0] = new Player(player0name, color0, 4, new StupidPlayerStrategy());

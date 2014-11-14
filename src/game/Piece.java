@@ -43,6 +43,6 @@ public class Piece {
     }
 
     public static enum Color {
-        red, green, yellow, blue
+        RED, GREEN, YELLOW, BLUE
     }
 }

@@ -19,9 +19,9 @@ public class PlayerManagerTest {
 
     @Before
     public void setUp() throws Exception {
-        playerBlue = new Player("Blue", Color.blue, 4);
-        playerGreen = new Player("Green", Color.green, 4);
-        playerRed = new Player("Red", Color.red, 4);
+        playerBlue = new Player("Blue", Color.BLUE, 4);
+        playerGreen = new Player("Green", Color.GREEN, 4);
+        playerRed = new Player("Red", Color.RED, 4);
     }
 
     @After

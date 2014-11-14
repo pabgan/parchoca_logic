@@ -38,17 +38,17 @@ public class BoardTest {
     @Before
     public void setUp() throws Exception {
         board = new Board();
-        playerBlue = new Player("Blue", Color.blue, 4);
+        playerBlue = new Player("Blue", Color.BLUE, 4);
         pieceBlue0 = playerBlue.getPieces()[0];
         pieceBlue1 = playerBlue.getPieces()[1];
         pieceBlue2 = playerBlue.getPieces()[2];
         pieceBlue3 = playerBlue.getPieces()[3];
-        playerGreen = new Player("Green", Color.green, 4);
+        playerGreen = new Player("Green", Color.GREEN, 4);
         pieceGreen0 = playerGreen.getPieces()[0];
         pieceGreen1 = playerGreen.getPieces()[1];
         pieceGreen2 = playerGreen.getPieces()[2];
         pieceGreen3 = playerGreen.getPieces()[3];
-        playerRed = new Player("Red", Color.red, 4);
+        playerRed = new Player("Red", Color.RED, 4);
         pieceRed0 = playerRed.getPieces()[0];
         pieceRed1 = playerRed.getPieces()[1];
         pieceRed2 = playerRed.getPieces()[2];
