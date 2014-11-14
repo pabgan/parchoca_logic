@@ -95,7 +95,7 @@ public class Board {
      */
     public int move(final Piece piece, final int jumps) {
         if (piece == null || isAtParchoca(piece)) {
-            throw new IllegalArgumentException("Need a piece to move and it should not be at Parchoca already.");
+            throw new IllegalArgumentException("Piece should not be NULL or be at Parchoca.");
         }
         if (jumps < 1) {
             throw new IllegalArgumentException("Can't jump less than 1 square.");
