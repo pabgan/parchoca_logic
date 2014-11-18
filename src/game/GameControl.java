@@ -1,69 +1,110 @@
 package game;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class GameControl {
-    private int turn;
+	private final Board board;
+	private final PlayerManager playerManager;
 
-    private Player[] players;
-    private final Player[] endPositions;
-    private final Board board;
+	public GameControl() {
+		this.board = new Board();
+		this.playerManager = new PlayerManager();
+	}
 
-    public GameControl() {
-        this.board = null;
-        this.players = null;
-        this.endPositions = null;
-    }
+	public void addPlayer(final Player player) {
+		playerManager.addPlayer(player);
+		for (Piece piece : player.getPieces()) {
+			board.addPiece(piece);
+		}
+	}
 
-    public GameControl(Player[] players) {
-        this.players = players;
-        this.endPositions = new Player[players.length];
-        this.players = players;
+	public void start() {
+		for (int i = 0; i < Dice.throwDice() - 1; i++) {
+			playerManager.nextPlayer();
+		}
 
-        Set<Piece> pieces = new HashSet<Piece>();
+		while (!gameOver()) {
+			System.out.println("************** Aún no hemos terminado ************************");
+			// How many 6 in a row has the player had
+			int result6 = 0;
 
-        for (Player player : players) {
-            pieces.addAll(player.getPieces());
-        }
-        this.board = new Board(pieces);
-    }
+			Player playerCurrent = playerManager.nextPlayer();
+			System.out.println("Le toca a " + playerCurrent.getName() + "." + playerCurrent.getColor());
+			Piece pieceSelected = null;
+			boolean tiraOtraVez = true;
 
-    public void addPlayer(Player player) {
+			while (tiraOtraVez) {
+				tiraOtraVez = false;
+				int diceResult = Dice.throwDice();
+				int jumps = diceResult;
+				System.out.println("Dice: " + diceResult);
 
-    }
+				if (diceResult == 6) {
+					tiraOtraVez = true;
 
-    public void start() {
-        // TODO Auto-generated method stub
-        turn = selectInitialPlayer();
+					if (++result6 == 3) {
+						board.killPiece(pieceSelected);
+						tiraOtraVez = false;
+						jumps = 0;
+					} else if (playerCurrent.allPiecesOut()) {
+						jumps = 7;
+					}
+				} else {
+					result6 = 0;
+				}
 
-    }
+				while (jumps > 0) {
+					System.out.println("--------------------------- \nJumps: " + jumps);
+					pieceSelected = playerCurrent.selectPieceToMove(board, jumps);
+					int moveResult = 0;
+					if (pieceSelected != null) {
+						moveResult = board.move(pieceSelected, jumps);
+					}
 
-    public void play() {
-        while (!isGameOver()) {
-            players[turn].move();
-        }
-    }
+					switch (moveResult) {
+						case 21:
+							tiraOtraVez = true;
+						case 20:
+							jumps = 20;
+							break;
+						case 11:
+							tiraOtraVez = true;
+						case 10:
+							boolean playerHasFinished = true;
+							for (Piece piece : playerCurrent.getPieces()) {
+								if (!board.isAtParchoca(piece)) {
+									playerHasFinished = false;
+								}
+							}
 
-    public boolean isGameOver() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+							if (playerHasFinished) {
+								System.out.println("¡¡¡" + playerCurrent.getName() + " TERMINÓ!!!");
+								playerManager.playerHasFinished();
+								tiraOtraVez = false;
+								jumps = 0;
+							} else {
+								jumps = 10;
+							}
+							break;
+						case 1:
+							tiraOtraVez = true;
+							jumps = 0;
+							break;
+						default:
+							tiraOtraVez = false;
+							jumps = 0;
+							playerCurrent.setPenalty(Math.abs(moveResult));
+					}
 
-    private int selectInitialPlayer() {
-        // TODO Auto-generated method stub
-    }
+					System.out.println(board);
+				}
+			}
+		}
+	}
 
-    public Player whoIsNextPlayer() {
-        // TODO Auto-generated method stub
-        if (turn >= players.length) {
-            turn = 0;
-        } else {
-            turn++;
-        }
+	private boolean gameOver() {
+		return playerManager.numberOfPlayersStillPlaying() == 0;
+	}
 
-        // if (players[turn].ge) {
-        // return null;
-        // }
-    }
+	public void printState() {
+		System.out.println(board);
+	}
 }
