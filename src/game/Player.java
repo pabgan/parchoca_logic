@@ -1,4 +1,3 @@
-
 package game;
 
 import game.Piece.Color;
@@ -9,92 +8,92 @@ import game.Piece.Color;
  * @author pganuza
  */
 public class Player {
-    private final String name;
-    private final Color color;
-    private Piece[] pieces = null;
-    private int penalty;
-    private IPlayerStrategy strategy = null;
+	private final String name;
+	private final Color color;
+	private Piece[] pieces = null;
+	private int penalty;
+	private IPlayerStrategy strategy = null;
 
-    public Player(final String name, final Color color, final int numPieces) {
-        if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name can not be empty");
-        }
+	public Player(final String name, final Color color, final int numPieces) {
+		if (name == null || name.isEmpty()) {
+			throw new IllegalArgumentException("Name can not be empty");
+		}
 
-        if (numPieces < 1) {
-            throw new IllegalArgumentException("At least one piece is needed for a player.");
+		if (numPieces < 1) {
+			throw new IllegalArgumentException("At least one piece is needed for a player.");
 
-        }
+		}
 
-        this.name = name;
-        this.color = color;
-        this.pieces = new Piece[numPieces];
+		this.name = name;
+		this.color = color;
+		this.pieces = new Piece[numPieces];
 
-        for (int i = 0; i < pieces.length; i++) {
-            pieces[i] = new Piece(this);
-        }
-    }
+		for (int i = 0; i < pieces.length; i++) {
+			pieces[i] = new Piece(this);
+		}
+	}
 
-    public Player(final String name, final Color color, final int numPieces, final IPlayerStrategy strategy) {
-        this(name, color, numPieces);
+	public Player(final String name, final Color color, final int numPieces, final IPlayerStrategy strategy) {
+		this(name, color, numPieces);
 
-        this.strategy = strategy;
-    }
+		this.strategy = strategy;
+	}
 
-    public int getPenalty() {
-        return penalty;
-    }
+	public int getPenalty() {
+		return penalty;
+	}
 
-    public int getPenaltyAndDiscount() {
-        if (penalty > 0) {
-            return penalty--;
-        }
+	public int getPenaltyAndDiscount() {
+		if (penalty > 0) {
+			return penalty--;
+		}
 
-        return 0;
-    }
+		return 0;
+	}
 
-    public void setPenalty(final int penalty) {
-        if (penalty < 0) {
-            throw new IllegalArgumentException();
-        }
+	public void setPenalty(final int penalty) {
+		if (penalty < 0) {
+			throw new IllegalArgumentException();
+		}
 
-        this.penalty = penalty;
-    }
+		this.penalty = penalty;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public Color getColor() {
-        return color;
-    }
+	public Color getColor() {
+		return color;
+	}
 
-    public Piece[] getPieces() {
-        return pieces;
-    }
+	public Piece[] getPieces() {
+		return pieces;
+	}
 
-    /**
+	/**
      * 
      */
-    public Piece selectPieceToMove(final Board board, final int jumps) {
-        if (board == null) {
-            throw new IllegalArgumentException("Board is needed to select the piece to move.");
-        }
-        if (jumps < 1) {
-            throw new IllegalArgumentException("Can't jump less than one square.");
-        }
-        if (strategy == null) {
-            throw new IllegalStateException("Strategy not defined for this player");
-        }
+	public Piece selectPieceToMove(final Board board, final int jumps) {
+		if (board == null) {
+			throw new IllegalArgumentException("Board is needed to select the piece to move.");
+		}
+		if (jumps < 1) {
+			throw new IllegalArgumentException("Can't jump less than one square.");
+		}
+		if (strategy == null) {
+			throw new IllegalStateException("Strategy not defined for this player");
+		}
 
-        return strategy.selectMove(this, board, jumps);
-    }
+		return strategy.selectMove(this, board, jumps);
+	}
 
-    public boolean allPiecesOut() {
-        for (Piece piece : pieces) {
-            if (piece.getSquare().getNumber() == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
+	public boolean allPiecesOut() {
+		for (Piece piece : pieces) {
+			if (piece.getSquare().getNumber() == 0) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -1,4 +1,3 @@
-
 package game;
 
 /**
@@ -7,42 +6,42 @@ package game;
  * @author pganuza
  */
 public class Piece {
-    private Player player = null;
-    private ISquare square = null;
+	private Player player = null;
+	private ISquare square = null;
 
-    public Piece() {
-    }
+	public Piece() {
+	}
 
-    public Piece(final Player player) {
-        this.player = player;
-    }
+	public Piece(final Player player) {
+		this.player = player;
+	}
 
-    public Player getPlayer() {
-        return player;
-    }
+	public Player getPlayer() {
+		return player;
+	}
 
-    public void setPlayer(final Player player) {
-        this.player = player;
-    }
+	public void setPlayer(final Player player) {
+		this.player = player;
+	}
 
-    public Color getColor() {
-        return player.getColor();
-    }
+	public Color getColor() {
+		return player.getColor();
+	}
 
-    public ISquare getSquare() {
-        return square;
-    }
+	public ISquare getSquare() {
+		return square;
+	}
 
-    public void setSquare(final ISquare square) {
-        this.square = square;
-    }
+	public void setSquare(final ISquare square) {
+		this.square = square;
+	}
 
-    @Override
-    public String toString() {
-        return getColor().toString().substring(0, 1);
-    }
+	@Override
+	public String toString() {
+		return getColor().toString().substring(0, 1);
+	}
 
-    public static enum Color {
-        RED, GREEN, YELLOW, BLUE
-    }
+	public static enum Color {
+		RED, GREEN, YELLOW, BLUE
+	}
 }
